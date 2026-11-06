@@ -1,0 +1,465 @@
+[
+ {
+  "mutation": "offer signature not verified",
+  "status": "caught",
+  "failing_tests": [
+   "flipping_any_byte_of_the_offer_is_rejected",
+   "offer_is_bound_to_both_endpoints",
+   "stolen_transport_key_alone_cannot_get_a_prompt"
+  ]
+ },
+ {
+  "mutation": "accept signature not verified",
+  "status": "caught",
+  "failing_tests": [
+   "flipping_any_byte_of_the_accept_is_rejected",
+   "stolen_receiver_transport_key_cannot_complete_the_exchange"
+  ]
+ },
+ {
+  "mutation": "data signature not verified",
+  "status": "caught",
+  "failing_tests": [
+   "flipping_bytes_of_data_is_rejected_at_every_field"
+  ]
+ },
+ {
+  "mutation": "ack signature not verified",
+  "status": "caught",
+  "failing_tests": [
+   "ack_cannot_be_forged_or_flipped",
+   "signatures_do_not_cross_message_types"
+  ]
+ },
+ {
+  "mutation": "offer time window not checked",
+  "status": "caught",
+  "failing_tests": [
+   "stale_or_future_offers_are_rejected_and_the_edge_is_accepted"
+  ]
+ },
+ {
+  "mutation": "offer version not checked",
+  "status": "caught",
+  "failing_tests": [
+   "offer_with_unknown_bucket_or_version_is_refused_even_if_signed"
+  ]
+ },
+ {
+  "mutation": "offer bucket not checked",
+  "status": "caught",
+  "failing_tests": [
+   "offer_with_unknown_bucket_or_version_is_refused_even_if_signed"
+  ]
+ },
+ {
+  "mutation": "accept id not compared",
+  "status": "caught",
+  "failing_tests": [
+   "accept_with_a_different_id_is_refused_even_when_correctly_signed"
+  ]
+ },
+ {
+  "mutation": "received label not validated",
+  "status": "caught",
+  "failing_tests": [
+   "malicious_sender_cannot_put_terminal_escapes_in_the_received_label"
+  ]
+ },
+ {
+  "mutation": "sent label not validated",
+  "status": "caught",
+  "failing_tests": [
+   "malicious_label_with_terminal_escapes_is_refused"
+  ]
+ },
+ {
+  "mutation": "weak peer keys accepted",
+  "status": "caught",
+  "failing_tests": [
+   "weak_peer_keys_are_refused_at_pairing_time"
+  ]
+ },
+ {
+  "mutation": "padding bytes not checked",
+  "status": "caught",
+  "failing_tests": [
+   "malicious_sender_nonzero_padding_is_a_covert_channel_and_refused"
+  ]
+ },
+ {
+  "mutation": "padded size not checked",
+  "status": "caught",
+  "failing_tests": [
+   "malicious_sender_wrong_bucket_size"
+  ]
+ },
+ {
+  "mutation": "frame length not checked first",
+  "status": "caught",
+  "failing_tests": [
+   "oversized_frames_are_refused_before_parsing"
+  ]
+ },
+ {
+  "mutation": "non-canonical encodings accepted",
+  "status": "caught",
+  "failing_tests": [
+   "a_frame_has_exactly_one_encoding",
+   "flipping_any_byte_of_the_offer_is_rejected"
+  ]
+ },
+ {
+  "mutation": "non-contributory X25519 accepted",
+  "status": "caught",
+  "failing_tests": [
+   "x25519_non_contributory_is_refused_by_the_kem_itself"
+  ]
+ },
+ {
+  "mutation": "data id not compared",
+  "status": "caught",
+  "failing_tests": [
+   "data_with_a_different_id_is_refused_even_when_correctly_signed"
+  ]
+ },
+ {
+  "mutation": "ack id not compared",
+  "status": "caught",
+  "failing_tests": [
+   "ack_with_a_different_id_is_refused_even_when_correctly_signed"
+  ]
+ },
+ {
+  "mutation": "payload key not bound to the transcript",
+  "status": "caught",
+  "failing_tests": [
+   "transcript_matches_the_independent_implementation"
+  ]
+ },
+ {
+  "mutation": "accept and ack share a label",
+  "status": "caught",
+  "failing_tests": [
+   "transcript_matches_the_independent_implementation"
+  ]
+ },
+ {
+  "mutation": "ack does not bind the ok flag",
+  "status": "caught",
+  "failing_tests": [
+   "ack_cannot_be_forged_or_flipped"
+  ]
+ },
+ {
+  "mutation": "vault header not authenticated",
+  "status": "caught",
+  "failing_tests": [
+   "round_trip"
+  ]
+ },
+ {
+  "mutation": "vault nonce fixed",
+  "status": "caught",
+  "failing_tests": [
+   "sealing_twice_gives_different_ciphertext"
+  ]
+ },
+ {
+  "mutation": "short passphrase accepted",
+  "status": "caught",
+  "failing_tests": [
+   "short_passphrase_is_refused"
+  ]
+ },
+ {
+  "mutation": "device name not validated",
+  "status": "caught",
+  "failing_tests": [
+   "device_name_with_escapes_is_refused"
+  ]
+ },
+ {
+  "mutation": "code execution variables not blocked",
+  "status": "caught",
+  "failing_tests": [
+   "blocked_names_can_only_be_allowed_one_by_one",
+   "code_execution_variables_are_blocked_in_any_case"
+  ]
+ },
+ {
+  "mutation": "case not folded when blocking",
+  "status": "caught",
+  "failing_tests": [
+   "code_execution_variables_are_blocked_in_any_case"
+  ]
+ },
+ {
+  "mutation": "duplicate names accepted",
+  "status": "caught",
+  "failing_tests": [
+   "errors_name_the_line_and_never_the_content"
+  ]
+ },
+ {
+  "mutation": "explicit allow ignored",
+  "status": "caught",
+  "failing_tests": [
+   "blocked_names_can_only_be_allowed_one_by_one"
+  ]
+ },
+ {
+  "mutation": "plain http allowed anywhere",
+  "status": "caught",
+  "failing_tests": [
+   "anything_else_is_refused_and_says_nothing_of_the_secret"
+  ]
+ },
+ {
+  "mutation": "link padding bytes not checked",
+  "status": "caught",
+  "failing_tests": [
+   "hostile_padding_is_refused"
+  ]
+ },
+ {
+  "mutation": "the largest size is not offered",
+  "status": "caught",
+  "failing_tests": [
+   "sizes_up_to_the_limit_round_trip_and_land_in_a_bucket"
+  ]
+ },
+ {
+  "mutation": "link padded size not checked",
+  "status": "caught",
+  "failing_tests": [
+   "hostile_padding_is_refused"
+  ]
+ },
+ {
+  "mutation": "base64 trailing bits ignored",
+  "status": "caught",
+  "failing_tests": [
+   "base64url_has_exactly_one_spelling"
+  ]
+ },
+ {
+  "mutation": "link ttl not checked",
+  "status": "caught",
+  "failing_tests": [
+   "only_the_offered_expiries_are_accepted"
+  ]
+ },
+ {
+  "mutation": "unknown reply fields accepted",
+  "status": "caught",
+  "failing_tests": [
+   "replies_are_read_strictly"
+  ]
+ },
+ {
+  "mutation": "duplicate reply fields accepted",
+  "status": "caught",
+  "failing_tests": [
+   "replies_are_read_strictly"
+  ]
+ },
+ {
+  "mutation": "created id not checked",
+  "status": "caught",
+  "failing_tests": [
+   "replies_are_read_strictly"
+  ]
+ },
+ {
+  "mutation": "link id not checked",
+  "status": "caught",
+  "failing_tests": [
+   "anything_else_is_refused_and_says_nothing_of_the_secret"
+  ]
+ },
+ {
+  "mutation": "secret shown in debug",
+  "status": "caught",
+  "failing_tests": [
+   "anything_else_is_refused_and_says_nothing_of_the_secret"
+  ]
+ },
+ {
+  "mutation": "received file names not checked",
+  "status": "caught",
+  "failing_tests": [
+   "file_names_round_trip_and_hostile_ones_are_refused"
+  ]
+ },
+ {
+  "mutation": "sent file names not checked",
+  "status": "caught",
+  "failing_tests": [
+   "file_names_round_trip_and_hostile_ones_are_refused"
+  ]
+ },
+ {
+  "mutation": "path separators allowed in names",
+  "status": "caught",
+  "failing_tests": [
+   "file_names_round_trip_and_hostile_ones_are_refused",
+   "the_browser_and_this_code_agree_on_every_character_in_a_name"
+  ]
+ },
+ {
+  "mutation": "names may end in a dot or a space",
+  "status": "caught",
+  "failing_tests": [
+   "file_names_round_trip_and_hostile_ones_are_refused",
+   "the_browser_and_this_code_agree_on_every_character_in_a_name"
+  ]
+ },
+ {
+  "mutation": "names may start with a space",
+  "status": "caught",
+  "failing_tests": [
+   "file_names_round_trip_and_hostile_ones_are_refused",
+   "the_browser_and_this_code_agree_on_every_character_in_a_name"
+  ]
+ },
+ {
+  "mutation": "soft hyphen allowed",
+  "status": "caught",
+  "failing_tests": [
+   "file_names_round_trip_and_hostile_ones_are_refused",
+   "the_browser_and_this_code_agree_on_every_character_in_a_name"
+  ]
+ },
+ {
+  "mutation": "variation selectors allowed",
+  "status": "caught",
+  "failing_tests": [
+   "file_names_round_trip_and_hostile_ones_are_refused",
+   "the_browser_and_this_code_agree_on_every_character_in_a_name"
+  ]
+ },
+ {
+  "mutation": "tag characters and the rest allowed",
+  "status": "caught",
+  "failing_tests": [
+   "file_names_round_trip_and_hostile_ones_are_refused",
+   "the_browser_and_this_code_agree_on_every_character_in_a_name"
+  ]
+ },
+ {
+  "mutation": "direction overrides allowed",
+  "status": "caught",
+  "failing_tests": [
+   "malicious_label_with_terminal_escapes_is_refused",
+   "malicious_sender_cannot_put_terminal_escapes_in_the_received_label"
+  ]
+ },
+ {
+  "mutation": "content shown in debug",
+  "status": "caught",
+  "failing_tests": [
+   "file_names_round_trip_and_hostile_ones_are_refused"
+  ]
+ },
+ {
+  "mutation": "origin characters not checked",
+  "status": "caught",
+  "failing_tests": [
+   "anything_else_is_refused_and_says_nothing_of_the_secret"
+  ]
+ },
+ {
+  "mutation": "reply strings may hold escapes",
+  "status": "caught",
+  "failing_tests": [
+   "replies_are_read_strictly"
+  ]
+ },
+ {
+  "mutation": "any size accepted when padding",
+  "status": "caught",
+  "failing_tests": [
+   "only_the_known_sizes_can_be_padded_to"
+  ]
+ },
+ {
+  "mutation": "any size accepted when unpadding",
+  "status": "caught",
+  "failing_tests": [
+   "only_the_known_sizes_can_be_read_from"
+  ]
+ },
+ {
+  "mutation": "too much for its size class",
+  "status": "caught",
+  "failing_tests": [
+   "content_that_does_not_fit_its_size_is_refused_rather_than_cut"
+  ]
+ },
+ {
+  "mutation": "vault size not limited",
+  "status": "caught",
+  "failing_tests": [
+   "a_file_over_the_limit_is_refused_before_it_is_read"
+  ]
+ },
+ {
+  "mutation": "vault magic not checked",
+  "status": "caught",
+  "failing_tests": [
+   "flipping_any_byte_of_the_file_fails"
+  ]
+ },
+ {
+  "mutation": "vault header fields not checked",
+  "status": "caught",
+  "failing_tests": [
+   "a_header_with_the_wrong_version_or_lengths_is_refused"
+  ]
+ },
+ {
+  "mutation": "empty text allowed",
+  "status": "caught",
+  "failing_tests": [
+   "malicious_label_with_terminal_escapes_is_refused"
+  ]
+ },
+ {
+  "mutation": "long text allowed",
+  "status": "caught",
+  "failing_tests": [
+   "malicious_label_with_terminal_escapes_is_refused",
+   "malicious_sender_cannot_put_terminal_escapes_in_the_received_label"
+  ]
+ },
+ {
+  "mutation": "bad variable names accepted",
+  "status": "caught",
+  "failing_tests": [
+   "errors_name_the_line_and_never_the_content"
+  ]
+ },
+ {
+  "mutation": "text after a quote accepted",
+  "status": "caught",
+  "failing_tests": [
+   "errors_name_the_line_and_never_the_content"
+  ]
+ },
+ {
+  "mutation": "links to any server accepted",
+  "status": "caught",
+  "failing_tests": [
+   "anything_else_is_refused_and_says_nothing_of_the_secret"
+  ]
+ },
+ {
+  "mutation": "control characters allowed",
+  "status": "caught",
+  "failing_tests": [
+   "malicious_label_with_terminal_escapes_is_refused",
+   "malicious_sender_cannot_put_terminal_escapes_in_the_received_label"
+  ]
+ }
+]

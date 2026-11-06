@@ -1,0 +1,10 @@
+// The public site: explanation, guides, and Google's ads. It holds no secrets and runs no server
+// code. The tool itself is on app.apikeybin.com and appears here in a frame.
+{
+  "name": "apikeybin-site",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": false,
+  "routes": [{ "pattern": "apikeybin.com", "custom_domain": true }],
+  "assets": { "directory": "./public", "html_handling": "auto-trailing-slash", "not_found_handling": "404-page" },
+  "observability": { "enabled": false }
+}

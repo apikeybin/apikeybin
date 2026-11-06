@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>APIキー便｜APIキーを安全に渡す</title>
+<meta name="description" content="APIキーや.envを、1回だけ読めるリンクで渡せます。ブラウザの中で暗号化するので、中身はサーバーに届きません。登録不要で無料です。">
+<meta name="google" content="notranslate">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/app.css">
+<script src="/app.js" defer></script>
+</head>
+<body>
+<header class="site"><a class="brand" href="/">APIキー便</a></header>
+<main>
+  <h1>APIキーを安全に渡す</h1>
+  <p class="lead">1回だけ読めるリンクを作ります。<br>ブラウザの中で暗号化します。<br>中身はサーバーに届きません。<br>この画面に広告はありません。</p>
+
+  <noscript><p class="alert">この機能にはJavaScriptが必要です。暗号化をブラウザの中で行うためです。</p></noscript>
+
+  <form id="create" autocomplete="off">
+    <div id="text-area">
+      <label class="field" for="text">渡したいもの</label>
+      <textarea id="text" rows="6" placeholder="STRIPE_KEY=sk_live_..." spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" translate="no" data-gramm="false" data-enable-grammarly="false" data-1p-ignore data-lpignore="true" data-form-type="other"></textarea>
+    </div>
+    <p id="file-chip" class="file-chip" hidden><span id="file-name" class="mono notranslate" translate="no"></span> <button id="clear-file" class="link-button" type="button" aria-label="ファイルを外す">×</button></p>
+    <p class="hint drop-zone"><button id="pick-file" class="link-button" type="button">.envなどのファイルを選ぶ</button>（64KBまで）<span class="drag-hint"><br>ここにドラッグしても選べます。</span></p>
+    <input id="file" type="file" hidden>
+
+    <div class="row">
+      <div>
+        <label class="field" for="ttl">有効期限</label>
+        <select id="ttl">
+          <option value="600">10分</option>
+          <option value="3600">1時間</option>
+          <option value="86400" selected>1日</option>
+          <option value="604800">7日</option>
+        </select>
+      </div>
+      <div class="grow">
+        <label class="field" for="passphrase">合言葉（なくても使えます）</label>
+        <input id="passphrase" type="text" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" translate="no" data-1p-ignore data-lpignore="true" data-form-type="other">
+      </div>
+    </div>
+
+    <p class="alert" id="err-empty" hidden>渡したいものを入力してください。</p>
+    <p class="alert" id="err-big" hidden>64KBを超えています。短くするか、分けて送ってください。</p>
+    <p class="alert" id="err-binary" hidden>いまは文字のファイルだけ送れます。</p>
+    <p class="alert" id="err-read" hidden>このファイルは読めませんでした。フォルダは送れません。</p>
+    <p class="alert" id="err-name" hidden>このファイル名は使えません。名前を変えてから選んでください。</p>
+    <p class="alert" id="err-slow" hidden>短い間に使いすぎています。1分ほど待ってからお試しください。</p>
+    <p class="alert" id="err-full" hidden>いま混み合っています。しばらくしてからお試しください。</p>
+    <p class="alert" id="err-net" hidden>リンクを作れませんでした。通信を確かめて、もう一度お試しください。</p>
+
+    <button id="make" class="primary" type="submit" disabled>リンクを作る</button>
+  </form>
+
+  <section id="result" hidden>
+    <h2 class="done">リンクができました</h2>
+    <p class="field">相手に送るリンク</p>
+    <pre id="link" class="secretbox link notranslate" translate="no"></pre>
+    <p><button id="copy-link" class="primary" type="button">コピー</button> <span id="copied-link" class="ok" hidden>コピーしました</span></p>
+    <ul class="notes">
+      <li>1回開くと消えます。</li>
+      <li>開かれなくても、<span id="expires-text"></span>で消えます。</li>
+      <li id="pw-note" hidden><strong>合言葉は別の方法で伝えてください。</strong></li>
+    </ul>
+    <p><button id="again" class="secondary" type="button">もう1つ作る</button></p>
+  </section>
+
+  <section class="about">
+    <h2>仕組み</h2>
+    <ol>
+      <li>ブラウザの中で暗号化します。<br>鍵はリンクの<code>#</code>より後ろに入ります。<br>ここはサーバーに送られません。</li>
+      <li>サーバーが持つのは暗号文だけです。<br>開かれた時点で消します。<br>期限が来ても消します。</li>
+      <li>開けるのは1回だけです。<br>相手が開く前に「使えない」と出たら、誰かが先に開いた合図です。<br>そのキーを無効にしてください。</li>
+    </ol>
+
+    <h2>守れないもの</h2>
+    <ul>
+      <li>リンクを持っている人は誰でも開けます。<br>大事なものには合言葉を付けてください。</li>
+      <li>相手の端末のウイルスや、ブラウザの拡張機能は防げません。</li>
+      <li>このサイトが乗っ取られると、配るプログラムをすり替えられます。<br>ブラウザで動くものに共通の限界です。</li>
+      <li>送ったキーは、使い終わったら無効にしてください。</li>
+    </ul>
+  </section>
+</main>
+<footer class="site"><a href="https://apikeybin.com/privacy" rel="noopener noreferrer">プライバシー</a> <a href="https://apikeybin.com/terms" rel="noopener noreferrer">利用規約</a> <a href="https://apikeybin.com/report" rel="noopener noreferrer">通報</a></footer>
+</body>
+</html>

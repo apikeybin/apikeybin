@@ -1,0 +1,12 @@
+{
+  "name": "apikeybin-web",
+  "private": true,
+  "type": "module",
+  "description": "The browser version. The site itself has no runtime dependencies; wrangler is a development tool.",
+  "devDependencies": {
+    "wrangler": "4.151.2"
+  },
+  "overrides": {
+    "undici": "7.30.1"
+  }
+}

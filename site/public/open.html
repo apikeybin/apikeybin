@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ja" class="no-ads">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>受け取ったAPIキーの扱い方｜APIキー便</title>
+<meta name="description" content="APIキーや.envを受け取ったときに確かめること。開く前の確認、保管の仕方、リンクが使えないときの対応をまとめました。">
+<link rel="canonical" href="https://apikeybin.com/open">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="APIキー便">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="受け取ったAPIキーの扱い方｜APIキー便">
+<meta property="og:description" content="APIキーや.envを受け取ったときに確かめること。開く前の確認、保管の仕方、リンクが使えないときの対応をまとめました。">
+<meta property="og:url" content="https://apikeybin.com/open">
+<meta property="og:image" content="https://apikeybin.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="APIキー便。APIキーを、チャットに貼らずに渡す。ブラウザで暗号化、1回読むと消える、登録なし。">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body id="go">
+<header class="site"><a class="brand" href="/">APIキー便</a></header>
+<main>
+  <div class="col">
+    <h1>受け取ったAPIキーの扱い方</h1>
+    <div class="with-link">
+      <p class="lead">リンクの中身は、次の画面で表示します。<br>開けるのは1回だけです。</p>
+      <p class="go"><a class="button" href="https://app.apikeybin.com/open">中身を見る ›</a></p>
+      <p class="hint">リンクの鍵はこのページに届いていません。<br>次の画面のアドレスが<code>app.apikeybin.com</code>であることを確かめてください。</p>
+    </div>
+    <p class="lead without-link">APIキーや.envを受け取ったときに確かめることをまとめました。</p>
+
+    <aside class="ad ad-clear" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x250" data-ad-slot="open-top">広告の枠</div></aside>
+
+    <section>
+      <h2>開く前に確かめること</h2>
+      <ul>
+        <li>送り手を知っていますか。<br>知らない相手からのリンクは開かないでください。</li>
+        <li>周りから画面が見えませんか。<br>中身はそのまま表示されます。</li>
+        <li>いま保存できますか。<br>閉じると二度と見られません。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>受け取ったあとにすること</h2>
+      <ol>
+        <li>パスワード管理ソフトか、サーバーの環境変数に入れます。<br>メモ帳やチャットに貼らないでください。</li>
+        <li><code>.env</code>はGitに入れません。<br><code>.gitignore</code>に書いてあるか確かめてください。</li>
+        <li>使う範囲を絞ったキーか確かめます。<br>広すぎるなら、絞ったキーを作り直してもらってください。</li>
+        <li>使い終わったら無効にします。<br>キーは使わなくなってからも残り続けます。</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>「使えません」と出たとき</h2>
+      <p>すでに開かれたか、期限が切れています。<br><strong>自分で開いた覚えがなければ、誰かが先に開いた可能性があります。</strong></p>
+      <p>送り手に伝えてください。<br>そのキーは無効にして、作り直してもらうのが安全です。</p>
+    </section>
+
+    <section>
+      <h2>なぜ1回しか開けないのですか</h2>
+      <p>チャットやメールには、リンクが残り続けます。<br>1回で消えれば、あとから漏れても読まれません。<br>相手より先に誰かが開くと、相手には開けなくなるので、盗み見にも気づけます。</p>
+    </section>
+
+    <p class="go with-link"><a class="button" href="https://app.apikeybin.com/open">中身を見る ›</a></p>
+
+    <section>
+      <h2>自分でキーを渡すときは</h2>
+      <p>APIキー便で、1回だけ読めるリンクを作れます。<br>登録はいりません。</p>
+      <p><a href="/">リンクを作る</a></p>
+    </section>
+
+    <section>
+      <h2>関連する読み物</h2>
+      <ul>
+        <li><a href="/guides/api-key-leaked">APIキーが漏れたときにやること</a></li>
+        <li><a href="/guides/env-file-sharing">.envファイルをチームで共有する方法</a></li>
+      </ul>
+    </section>
+  </div>
+  <aside class="rail" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x250" data-ad-slot="open-rail">広告の枠</div></aside>
+</main>
+<footer class="site"><nav aria-label="このサイトについて"><a href="/guides/">読み物</a> <a href="/privacy">プライバシー</a> <a href="/terms">利用規約</a> <a href="/report">通報</a> <a href="https://github.com/apikeybin/apikeybin" rel="noopener">GitHub</a></nav></footer>
+</body>
+</html>

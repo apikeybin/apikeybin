@@ -1,0 +1,140 @@
+(* apikeybin transfer protocol v0.2, symbolic model for ProVerif.
+
+   Worst case for the network: the attacker reads, drops, reorders and injects every frame.
+   QUIC and TLS give nothing in this model, so what holds here holds with the transport
+   fully compromised.
+
+   A is an honest sender, B an honest receiver. C is a paired device whose identity key the
+   attacker holds, so a compromised peer is in scope. After phase 1 the attacker also gets
+   the long-term identity keys of A and B, which is what forward secrecy is about.
+
+   Cryptography is idealised. A proof here says the message flow has no logical flaw. It says
+   nothing about the implementation or about the strength of the primitives. *)
+
+free c: channel.
+
+type skey.
+type pkey.
+type dkey.
+type ekey.
+type rnd.
+type key.
+
+(* Ed25519 *)
+fun pk(skey): pkey.
+fun sign(bitstring, skey): bitstring.
+reduc forall m: bitstring, k: skey; sigok(sign(m, k), m, pk(k)) = true.
+
+(* X-Wing, as a KEM *)
+fun ekof(dkey): ekey.
+fun kct(ekey, rnd): bitstring.
+fun kss(ekey, rnd): bitstring.
+reduc forall d: dkey, r: rnd; kdec(d, kct(ekof(d), r)) = kss(ekof(d), r).
+
+(* HKDF-SHA256 and SHA-256 *)
+fun kdf(bitstring, bitstring): key.
+fun h(bitstring): bitstring.
+
+(* XChaCha20-Poly1305. The random nonce is omitted: the key is unique per transfer. *)
+fun aenc(bitstring, key, bitstring): bitstring.
+reduc forall m: bitstring, k: key, a: bitstring; adec(aenc(m, k, a), k, a) = m.
+
+const CTX, L_OFFER, L_ACCEPT, L_DATA, L_ACK: bitstring.
+
+(* Identities. skC is public: C is compromised. *)
+free skA, skB: skey [private].
+free skC: skey.
+free eidA, eidB, eidC: bitstring.
+
+(* The value that must stay secret: what A sends to B. *)
+free secretAB: bitstring [private].
+
+(* Events: s, r are identity public keys, meta is what the Offer claims. *)
+event OfferSent(pkey, pkey, bitstring, bitstring).
+event OfferShown(pkey, pkey, bitstring, bitstring).
+event ReceiverIssuedEk(pkey, pkey, bitstring, ekey).
+event SenderUsedEk(pkey, pkey, bitstring, ekey).
+event SenderSent(pkey, pkey, bitstring, bitstring).
+event ReceiverGot(pkey, pkey, bitstring, bitstring).
+event ReceiverAcked(pkey, pkey, bitstring).
+event SenderConfirmed(pkey, pkey, bitstring).
+
+(* Q1: the attacker never learns the secret, even with both identity keys afterwards. *)
+query attacker(secretAB).
+
+(* Q2: a prompt is only ever shown for an offer the claimed sender really made. *)
+query s: pkey, r: pkey, i: bitstring, m: bitstring;
+  event(OfferShown(s, r, i, m)) ==> event(OfferSent(s, r, i, m)) || s = pk(skC).
+
+(* Q3: the sender encrypts only to a key the pinned receiver really issued, for this offer. *)
+query s: pkey, r: pkey, t: bitstring, e: ekey;
+  event(SenderUsedEk(s, r, t, e)) ==> event(ReceiverIssuedEk(s, r, t, e)) || r = pk(skC).
+
+(* Q4: what is delivered came from that sender, for this offer, and only once. *)
+query s: pkey, r: pkey, m: bitstring, x: bitstring;
+  inj-event(ReceiverGot(s, r, m, x)) ==> inj-event(SenderSent(s, r, m, x)) || s = pk(skC).
+
+(* Q5: "delivered" means the pinned receiver really finished this transfer. *)
+query s: pkey, r: pkey, t: bitstring;
+  event(SenderConfirmed(s, r, t)) ==> event(ReceiverAcked(s, r, t)) || r = pk(skC).
+
+let Sender(skS: skey, eidS: bitstring, pkR: pkey, eidR: bitstring, secret: bitstring) =
+  new id: bitstring;
+  in(c, meta: bitstring);
+  let th0 = h((CTX, eidS, eidR)) in
+  let body = (id, meta) in
+  let offer = (body, sign((L_OFFER, h((th0, body))), skS)) in
+  event OfferSent(pk(skS), pkR, id, meta);
+  out(c, offer);
+  let th1 = h((th0, offer)) in
+  in(c, accept: bitstring);
+  let (=id, ek: ekey, sigR: bitstring) = accept in
+  if sigok(sigR, (L_ACCEPT, h((th1, id, ek))), pkR) = true then
+  event SenderUsedEk(pk(skS), pkR, th1, ek);
+  let th2 = h((th1, accept)) in
+  new r: rnd;
+  let ct = kct(ek, r) in
+  let k = kdf(kss(ek, r), th2) in
+  let enc = aenc(secret, k, (th2, ct)) in
+  event SenderSent(pk(skS), pkR, meta, secret);
+  let data = (id, ct, enc, sign((L_DATA, h((th2, id, ct, enc))), skS)) in
+  out(c, data);
+  let th3 = h((th2, data)) in
+  in(c, ack: bitstring);
+  let (=id, sigA: bitstring) = ack in
+  if sigok(sigA, (L_ACK, h((th3, id))), pkR) = true then
+  event SenderConfirmed(pk(skS), pkR, th3).
+
+let Receiver(skR: skey, eidR: bitstring, pkS: pkey, eidS: bitstring) =
+  in(c, offer: bitstring);
+  let (body: bitstring, sigO: bitstring) = offer in
+  let th0 = h((CTX, eidS, eidR)) in
+  if sigok(sigO, (L_OFFER, h((th0, body))), pkS) = true then
+  let (id: bitstring, meta: bitstring) = body in
+  event OfferShown(pkS, pk(skR), id, meta);
+  let th1 = h((th0, offer)) in
+  new d: dkey;
+  let ek = ekof(d) in
+  event ReceiverIssuedEk(pkS, pk(skR), th1, ek);
+  let accept = (id, ek, sign((L_ACCEPT, h((th1, id, ek))), skR)) in
+  out(c, accept);
+  let th2 = h((th1, accept)) in
+  in(c, data: bitstring);
+  let (=id, ct: bitstring, enc: bitstring, sigS: bitstring) = data in
+  if sigok(sigS, (L_DATA, h((th2, id, ct, enc))), pkS) = true then
+  let ss = kdec(d, ct) in
+  let m = adec(enc, kdf(ss, th2), (th2, ct)) in
+  event ReceiverGot(pkS, pk(skR), meta, m);
+  let th3 = h((th2, data)) in
+  event ReceiverAcked(pkS, pk(skR), th3);
+  out(c, (id, sign((L_ACK, h((th3, id))), skR))).
+
+process
+  out(c, (pk(skA), pk(skB), pk(skC)));
+  (
+      (!Sender(skA, eidA, pk(skB), eidB, secretAB))
+    | (!Receiver(skB, eidB, pk(skA), eidA))
+    | (!Receiver(skB, eidB, pk(skC), eidC))
+    | (!Sender(skC, eidC, pk(skB), eidB, eidC))
+    | (phase 1; out(c, (skA, skB)))
+  )

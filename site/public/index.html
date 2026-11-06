@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ja" class="no-ads">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>APIキー便｜APIキーを安全に渡す</title>
+<meta name="description" content="APIキーや.envを、1回だけ読めるリンクで渡せます。ブラウザの中で暗号化するので、中身はサーバーに届きません。登録不要で無料です。">
+<link rel="canonical" href="https://apikeybin.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="APIキー便">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="APIキー便｜APIキーを安全に渡す">
+<meta property="og:description" content="APIキーや.envを、1回だけ読めるリンクで渡せます。ブラウザの中で暗号化するので、中身はサーバーに届きません。登録不要で無料です。">
+<meta property="og:url" content="https://apikeybin.com/">
+<meta property="og:image" content="https://apikeybin.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="APIキー便。APIキーを、チャットに貼らずに渡す。ブラウザで暗号化、1回読むと消える、登録なし。">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+<header class="site"><a class="brand" href="/">APIキー便</a></header>
+<aside class="ad ad-top" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-banner" data-ad-slot="top">広告の枠</div></aside>
+<main>
+  <div class="col">
+    <h1>APIキーを安全に渡す</h1>
+    <p class="lead">1回だけ読めるリンクを作ります。</p>
+
+    <iframe id="tool" src="https://app.apikeybin.com/embed" title="リンクを作る" allow="clipboard-write" referrerpolicy="no-referrer"></iframe>
+
+    <aside class="ad ad-below" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x250" data-ad-slot="below">広告の枠</div></aside>
+
+    <section>
+      <h2>仕組み</h2>
+      <ol>
+        <li>ブラウザの中で暗号化します。<br>鍵はリンクの<code>#</code>より後ろに入ります。<br>ここはサーバーに送られません。</li>
+        <li>サーバーが持つのは暗号文だけです。<br>開かれた時点で消します。<br>期限が来ても消します。</li>
+        <li>開けるのは1回だけです。<br>相手が開く前に「使えない」と出たら、誰かが先に開いた合図です。<br>そのキーを無効にしてください。</li>
+      </ol>
+    </section>
+
+    <aside class="ad ad-middle" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x250" data-ad-slot="middle">広告の枠</div></aside>
+
+    <section>
+      <h2>読み物</h2>
+      <ul class="guide-list">
+        <li><a href="/guides/api-key-sharing">APIキーの渡し方</a></li>
+        <li><a href="/guides/env-file-sharing">.envファイルをチームで共有する方法</a></li>
+        <li><a href="/guides/api-key-leaked">APIキーが漏れたときにやること</a></li>
+        <li><a href="/guides/password-by-email">パスワードを別メールで送るのは意味がない？</a></li>
+        <li><a href="/guides/one-time-link-comparison">1回だけ読めるリンクの比較</a></li>
+        <li><a href="/guides/how-it-works">APIキー便の仕組みと限界</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>このページの広告について</h2>
+      <p>このページにはGoogleの広告が出ます。<br>広告のプログラムは、入力欄を読めません。<br>入力欄は別のサイト（app.apikeybin.com）の枠の中で動いているからです。</p>
+      <p>中身を表示する画面には、広告を出しません。<br>広告を出すと、リンクの鍵が広告の通信に載るからです。<br>リンクを開いた人は、先に広告のあるページを通ります。<br>鍵はそのページに届きません。</p>
+    </section>
+
+    <section>
+      <h2>守れないもの</h2>
+      <ul>
+        <li>リンクを持っている人は誰でも開けます。<br>大事なものには合言葉を付けてください。</li>
+        <li>相手の端末のウイルスや、ブラウザの拡張機能は防げません。</li>
+        <li>このサイトが乗っ取られると、配るプログラムをすり替えられます。<br>ブラウザで動くものに共通の限界です。</li>
+        <li>Googleの広告のプログラムが乗っ取られると、偽の入力欄に差し替えられます。<br>心配な場合は<a href="https://app.apikeybin.com/">広告のない画面</a>を使ってください。</li>
+        <li>ファイルをドラッグするときは、入力欄のある枠の中に落としてください。<br>枠の外に落とすと、乗っ取られた広告のプログラムに中身を読まれることがあります。</li>
+        <li>受け取る人が通るページが乗っ取られると、ボタンの行き先を偽の画面に変えられます。<br>鍵はそのページに届かないので、キーそのものは取られません。<br>アドレスが<code>app.apikeybin.com</code>でない画面には、何も入力しないでください。</li>
+        <li>送ったキーは、使い終わったら無効にしてください。</li>
+      </ul>
+    </section>
+  </div>
+  <aside class="rail" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x600" data-ad-slot="rail">広告の枠</div></aside>
+</main>
+<footer class="site"><nav aria-label="このサイトについて"><a href="/guides/">読み物</a> <a href="/privacy">プライバシー</a> <a href="/terms">利用規約</a> <a href="/report">通報</a> <a href="https://github.com/apikeybin/apikeybin" rel="noopener">GitHub</a></nav></footer>
+</body>
+</html>

@@ -1,0 +1,30 @@
+[workspace]
+resolver = "3"
+members = ["crates/apikeybin-core", "crates/apikeybin-cli"]
+
+[workspace.package]
+version = "0.0.1"
+edition = "2024"
+rust-version = "1.99"
+license = "MIT OR Apache-2.0"
+publish = false
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_debug_implementations = "warn"
+
+[workspace.lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+indexing_slicing = "warn"
+
+[profile.release]
+panic = "abort"
+lto = true
+codegen-units = 1
+strip = true
+
+# Argon2 and ML-KEM are far too slow unoptimized to run in tests.
+[profile.dev.package."*"]
+opt-level = 2

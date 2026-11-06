@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ja" class="no-ads">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>プライバシーポリシー｜APIキー便</title>
+<meta name="description" content="APIキー便が保存するもの、数えているもの、広告とCookieの扱いをまとめました。中身は暗号化され、運営側でも読めません。">
+<link rel="canonical" href="https://apikeybin.com/privacy">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="APIキー便">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="プライバシーポリシー｜APIキー便">
+<meta property="og:description" content="APIキー便が保存するもの、数えているもの、広告とCookieの扱いをまとめました。中身は暗号化され、運営側でも読めません。">
+<meta property="og:url" content="https://apikeybin.com/privacy">
+<meta property="og:image" content="https://apikeybin.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="APIキー便。APIキーを、チャットに貼らずに渡す。ブラウザで暗号化、1回読むと消える、登録なし。">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+<header class="site"><a class="brand" href="/">APIキー便</a></header>
+<main>
+  <div class="col">
+    <h1>プライバシーポリシー</h1>
+    <p class="lead">最終更新: 2026年11月5日</p>
+
+    <section>
+      <h2>渡す中身</h2>
+      <p>中身はブラウザの中で暗号化します。<br>サーバーに届くのは暗号文だけです。<br>鍵はリンクの<code>#</code>より後ろに入り、サーバーに送られません。<br>そのため、運営側でも中身を読めません。</p>
+    </section>
+
+    <section>
+      <h2>サーバーに保存するもの</h2>
+      <ul>
+        <li>暗号文</li>
+        <li>リンクを持っていることを確かめるための値（ハッシュにしたもの）</li>
+        <li>期限</li>
+        <li>合言葉を付けたかどうかと、合言葉の計算に使う乱数</li>
+      </ul>
+      <p>開かれた時点で消します。<br>期限が来ても消します。<br>作った時刻とIPアドレスは保存しません。<br>期限は保存するので、そこから作った時刻の見当はつきます。</p>
+    </section>
+
+    <section>
+      <h2>数えているもの</h2>
+      <p>日ごとの合計だけを数えています。<br>リンクを作った数、開いた数、作る画面を読み込んだ数の3つです。<br>人ごとの記録はしません。</p>
+    </section>
+
+    <section>
+      <h2>通信のときに扱うもの</h2>
+      <p>短い間に使いすぎていないかを確かめるために、IPアドレスを一時的に使います。<br>データベースには保存しません。</p>
+      <p>サーバーにはCloudflareを使っています。<br>Cloudflareは、通信を届けるためにIPアドレスなどを扱います。<br>詳しくは<a href="https://www.cloudflare.com/privacypolicy/">Cloudflareのプライバシーポリシー</a>をご覧ください。</p>
+    </section>
+
+    <section>
+      <h2>ブラウザに置くもの</h2>
+      <p>作る画面と中身を表示する画面（<code>app.apikeybin.com</code>）では、Cookieを使いません。</p>
+      <p>リンクを受け取った人が広告のあるページを通る間だけ、リンクのIDと鍵をそのタブの中に置きます（<code>sessionStorage</code>）。<br>広告のあるページからは読めません。<br>中身を表示するときに消します。<br>1時間たつと無効になり、タブを閉じると消えます。</p>
+    </section>
+
+    <section>
+      <h2>広告とCookie</h2>
+      <p><code>apikeybin.com</code>のページには、Googleなどの広告を掲載します。<br>作る画面と中身を表示する画面（<code>app.apikeybin.com</code>）に、広告のプログラムは置きません。</p>
+      <ul>
+        <li>Googleなどの第三者配信事業者がCookieを使用して、このサイトや他のサイトに過去にアクセスした際の情報に基づいて広告を配信します。</li>
+        <li>Googleが広告Cookieを使用することにより、このサイトや他のサイトにアクセスした際の情報に基づいて、Googleとそのパートナーが適切な広告を表示できます。</li>
+        <li>パーソナライズド広告は、<a href="https://www.google.com/settings/ads">広告設定</a>で無効にできます。<br><a href="https://www.aboutads.info/choices/">www.aboutads.info</a>で、第三者配信事業者のCookieによるパーソナライズド広告を無効にすることもできます。</li>
+        <li>第三者配信事業者や広告ネットワークの配信する広告も掲載されることがあります。<br>対象の事業者は、Googleの<a href="https://support.google.com/admanager/answer/94149?hl=ja">認定された広告配信事業者の一覧</a>にあります。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>メールでいただいた内容</h2>
+      <p>通報やお問い合わせのメールは、その対応のためだけに使います。<br>法令に基づく場合を除いて、第三者に渡しません。</p>
+    </section>
+
+    <section>
+      <h2>お問い合わせ</h2>
+      <p><a href="mailto:contact@apikeybin.com">contact@apikeybin.com</a></p>
+      <p>このページの内容を変えるときは、ここに書き、更新日を改めます。</p>
+    </section>
+  </div>
+</main>
+<footer class="site"><nav aria-label="このサイトについて"><a href="/guides/">読み物</a> <a href="/privacy">プライバシー</a> <a href="/terms">利用規約</a> <a href="/report">通報</a> <a href="https://github.com/apikeybin/apikeybin" rel="noopener">GitHub</a></nav></footer>
+</body>
+</html>

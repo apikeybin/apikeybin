@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ja" class="no-ads">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>APIキー便の仕組みと限界｜中身がサーバーに届かない理由｜APIキー便</title>
+<meta name="description" content="APIキー便が中身をどう暗号化し、サーバーが何を持っているのか。悪意のあるスクリプトを3種のブラウザで動かして測った結果と、守れないものをまとめました。">
+<link rel="canonical" href="https://apikeybin.com/guides/how-it-works">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="APIキー便">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="APIキー便の仕組みと限界｜中身がサーバーに届かない理由｜APIキー便">
+<meta property="og:description" content="APIキー便が中身をどう暗号化し、サーバーが何を持っているのか。悪意のあるスクリプトを3種のブラウザで動かして測った結果と、守れないものをまとめました。">
+<meta property="og:url" content="https://apikeybin.com/guides/how-it-works">
+<meta property="og:image" content="https://apikeybin.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="APIキー便。APIキーを、チャットに貼らずに渡す。ブラウザで暗号化、1回読むと消える、登録なし。">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+<header class="site"><a class="brand" href="/">APIキー便</a></header>
+<main>
+  <article class="col">
+    <h1>APIキー便の仕組みと限界｜中身がサーバーに届かない理由</h1>
+    <p class="lead">鍵はサーバーに届きません。<br>ただし、守れないものもあります。<br>両方を書きます。</p>
+    <p class="meta">内容の確認日: 2026年11月5日</p>
+    <div class="answer"><h2>要点</h2><ul><li>中身は<strong>ブラウザの中で暗号化</strong>します。サーバーが持つのは暗号文だけです。</li><li>鍵はリンクの<code>#</code>より後ろに入り、サーバーに送られません。</li><li>開けるのは1回だけです。誰かが先に開くと相手には開けなくなるので、気づけます。</li><li><strong>サイトが乗っ取られると、配るプログラムをすり替えられます。</strong>ブラウザで動くものに共通の限界です。</li></ul></div>
+    <p class="go"><a class="button" href="/">リンクを作る ›</a></p>
+    <section>
+      <h2>リンクができるまで</h2>
+<ol>
+        <li>ブラウザが32バイトの乱数を作ります。<br>これがリンクの<code>#</code>より後ろに入る秘密です。</li>
+        <li>秘密から鍵を作り（HKDF-SHA256）、中身をAES-256-GCMで暗号化します。<br>ファイルの名前も一緒に暗号化します。</li>
+        <li>長さが分からないように、1KB、4KB、16KB、64KBのどれかの大きさまで埋めてから暗号化します。</li>
+        <li>暗号文をサーバーへ送ります。<br>秘密は送りません。<br>秘密から作った別の値の、ハッシュだけを送ります。</li>
+      </ol>
+      <pre>https://app.apikeybin.com/s/&lt;ID&gt;#1.&lt;秘密&gt;</pre>
+      <p>ブラウザは、URLの<code>#</code>より後ろをサーバーへ送りません。<br>Refererにも載りません（確かめました）。</p>
+    </section>
+    <section>
+      <h2>開くとき</h2>
+<ul>
+        <li>リンクを開いただけでは消えません。<br>プレビューのために開く機械で、中身が消えないようにするためです。</li>
+        <li>ボタンを押すと、秘密から作った値をサーバーに見せます。<br>サーバーはハッシュが合うときだけ暗号文を渡し、同時に消します。</li>
+        <li>渡すのと消すのは1つの命令です。<br>同時に開いても、取れるのは1人です。</li>
+        <li>開封済み、期限切れ、存在しない、値が違う。<br>どの場合も同じ答えを返します。</li>
+        <li>IDだけを知っていても、読むことも消すこともできません。<br>ログや履歴からIDが漏れても同じです。</li>
+      </ul>
+    </section>
+    <section>
+      <h2>サーバーが持っているもの</h2>
+<div class="table"><table>
+        <tr><th>持っているもの</th><th>持っていないもの</th></tr>
+        <tr><td>暗号文<br>確かめる値のハッシュ<br>期限<br>合言葉の有無と、そのための乱数</td><td>鍵<br>中身<br>ファイルの名前<br>IPアドレス</td></tr>
+      </table></div>
+      <p>作った時刻の欄はありません。<br>期限は持っているので、そこから見当はつきます。</p>
+      <p>データベースが丸ごと盗まれても、出てくるのは暗号文です。<br>書き換えられても、開くときに検出します。</p>
+      <p>数えているのは、日ごとの合計だけです。<br>詳しくは<a href="/privacy">プライバシーポリシー</a>に書きました。</p>
+    </section>
+    <aside class="ad" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x250" data-ad-slot="guide-middle">広告の枠</div></aside>
+    <section>
+      <h2>合言葉</h2>
+<p>リンクを持っている人は誰でも開けます。<br>チャットのログなどからリンクが漏れる心配があるときは、合言葉を付けてください。</p>
+      <p>合言葉はPBKDF2-HMAC-SHA256で60万回計算してから、秘密と合わせて鍵にします。<br>リンクとは別の方法で伝えてください。</p>
+    </section>
+    <section>
+      <h2>広告との関係</h2>
+<p>このサイトには広告があります。<br>広告のプログラムと秘密を、次のように分けています。</p>
+      <ul>
+        <li><strong>作る画面:</strong>入力欄は別のオリジン（<code>app.apikeybin.com</code>）の枠の中で動きます。<br>広告のプログラムは枠の外のページで動くので、入力欄を読めません。</li>
+        <li><strong>中身を表示する画面:</strong>広告を置きません。第三者のプログラムを1つも読み込みません。</li>
+        <li><strong>受け取る人が通るページ:</strong>リンクを開いた人は、先に<code>apikeybin.com/open</code>を通ります。<br>鍵とIDはタブの中に残したまま移るので、URLにもRefererにも載りません。<br>このページにGoogleの広告は置きません。</li>
+      </ul>
+    </section>
+    <section>
+      <h2>悪意のあるスクリプトで測った結果</h2>
+<p>Chromium、WebKit、Firefoxで、悪意のあるスクリプトを実際に動かしました。</p>
+      <div class="table"><table>
+        <tr><th>置き方</th><th>中身と鍵</th></tr>
+        <tr><td>秘密を扱うページに第三者のスクリプトを置く</td><td><strong>取れる</strong>。入力中の文字も取れる</td></tr>
+        <tr><td>同じページで、CSPで配信元を絞る</td><td><strong>取れる</strong>。許可した配信元へ送れる</td></tr>
+        <tr><td>第三者のスクリプトは外のページ、ツールは別オリジンの枠（APIキー便の形）</td><td>取れない。ただし枠を偽の入力欄に差し替えることはできる</td></tr>
+        <tr><td>同じ形で、Googleの本物の広告スクリプトを動かす（通信は止めて記録）</td><td>載らない</td></tr>
+        <tr><td>受け取る人が通るページで、悪意のあるスクリプトを動かす</td><td>取れない</td></tr>
+        <tr><td>配信元そのものが乗っ取られた</td><td><strong>取れる</strong>。CSPもSRIも役に立たない</td></tr>
+      </table></div>
+      <p>中身を表示する画面に広告のタグを貼る実験もしました。<br>広告の要求の<code>url=</code>に、<code>#</code>より後ろがそのまま入りました。<br>Googleがそれをどう扱うかは分かりませんが、鍵を第三者へ送ること自体が問題です。<br>中身を表示する画面に広告を置かないのは、このためです。</p>
+      <p>安全の検査は、1つずつ消して試験が落ちることも確かめています。<br>検査を消しても試験が落ちなければ、その試験は役に立っていないからです。</p>
+    </section>
+    <section>
+      <h2>守れないもの</h2>
+<ul>
+        <li><strong>配るサイトの乗っ取り。</strong><code>app.apikeybin.com</code>の配信元が乗っ取られると、盗まれます。<br>受け取る人がブラウザの中で配られたプログラムを確かめる方法は、拡張機能なしにはありません。</li>
+        <li><strong>広告のプログラムの乗っ取り。</strong>Googleのスクリプト自体が乗っ取られると、枠を偽の入力欄に差し替えられます。<br>心配な場合は、広告のない画面（<code>app.apikeybin.com</code>）を使ってください。</li>
+        <li><strong>端末のウイルスとブラウザの拡張機能。</strong>相手の端末で読まれると、防げません。</li>
+        <li><strong>ブラウザの履歴。</strong>鍵つきのURLは履歴に残ります。<br>読んだあとは無効です。読む前に漏れると読まれます。<br>合言葉で下げられます。</li>
+        <li><strong>ボタンまで押す検査ソフト。</strong>相手より先に開いてしまうことがあります。</li>
+        <li><strong>偽サイト。</strong>名前の似たドメインは防げません。<br>アドレスを確かめてください。</li>
+        <li><strong>悪用。</strong>中身を調べられないので、悪用されても探せません。<br>見つけたら<a href="/report">通報</a>してください。</li>
+      </ul>
+      <p>独立した監査は受けていません。<br>渡したキーは、使い終わったら無効にしてください。</p>
+    </section>
+    <p class="go"><a class="button" href="/">リンクを作る ›</a></p>
+    <section>
+      <h2>関連する読み物</h2>
+      <ul><li><a href="/guides/api-key-sharing">APIキーの渡し方｜チャットに貼らずに共有する方法</a></li><li><a href="/guides/one-time-link-comparison">1回だけ読めるリンクの比較｜Privnote、シークレット便、PrivateBin、Yopassなど</a></li></ul>
+    </section>
+    <aside class="ad" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x250" data-ad-slot="guide-end">広告の枠</div></aside>
+  </article>
+<aside class="rail" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x600" data-ad-slot="guide-rail">広告の枠</div></aside>
+</main>
+<footer class="site"><nav aria-label="このサイトについて"><a href="/guides/">読み物</a> <a href="/privacy">プライバシー</a> <a href="/terms">利用規約</a> <a href="/report">通報</a> <a href="https://github.com/apikeybin/apikeybin" rel="noopener">GitHub</a></nav></footer>
+</body>
+</html>

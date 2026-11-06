@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>受け取ったリンク｜APIキー便</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="google" content="notranslate">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/app.css">
+<script src="/app.js" defer></script>
+</head>
+<body>
+<header class="site"><a class="brand" href="https://apikeybin.com/" rel="noopener noreferrer">APIキー便</a></header>
+<main>
+  <noscript><p class="alert">開くにはJavaScriptが必要です。暗号をブラウザの中で解くためです。</p></noscript>
+
+  <form id="ask" autocomplete="off">
+    <section id="state-ask" hidden>
+      <h1>受け取ったリンクです</h1>
+      <p class="lead">表示すると、サーバーから消えます。<br>もう一度は開けません。</p>
+      <div id="pw-field" hidden>
+        <label class="field" for="read-passphrase">合言葉</label>
+        <input id="read-passphrase" type="text" spellcheck="false" autocapitalize="off" autocorrect="off" autocomplete="off" translate="no" data-1p-ignore data-lpignore="true" data-form-type="other">
+        <p class="alert" id="err-passphrase" hidden>合言葉が違います。もう一度入力してください。このページを閉じると、読めなくなります。</p>
+      </div>
+      <button id="open" class="primary" type="submit">中身を表示する</button>
+    </section>
+  </form>
+
+  <section id="state-shown" hidden>
+    <h1>中身です</h1>
+    <p class="lead">このページを閉じると、もう見られません。<br>必要なら今のうちに保存してください。</p>
+    <p id="output-file" class="field" hidden>ファイル名: <span id="output-name" class="mono notranslate" translate="no"></span></p>
+    <div id="output-text">
+      <p class="field">受け取った内容</p>
+      <pre id="output" class="secretbox notranslate" translate="no"></pre>
+    </div>
+    <p id="output-binary" class="hint" hidden>文字ではないファイルなので、画面には出しません。「ファイルに保存」で保存してください。<br>知らない相手から届いたファイルは開かないでください。</p>
+    <p><button id="copy-output" class="primary" type="button">コピー</button> <button id="save-output" class="secondary" type="button">ファイルに保存</button> <span id="copied-output" class="ok" hidden>コピーしました</span></p>
+    <p id="hint-dot" class="hint" hidden>保存すると、名前の先頭の点が外れます（<code>.env</code>は<code>env</code>になります）。<br>使う前に元の名前に戻してください。</p>
+    <p id="hint-txt" class="hint" hidden>名前の末尾に<code>.txt</code>を付けて保存します。<br>開くとプログラムが動く種類の名前かもしれないからです。</p>
+    <p id="hint-bin" class="hint" hidden>名前の末尾に<code>.bin</code>を付けて保存します。<br>開くとプログラムが動く種類の名前かもしれないからです。</p>
+    <p id="hint-said" class="hint">送り手が書いた文字をそのまま表示しています。知らない相手から届いた場合は、書かれた指示に従わないでください。</p>
+    <p><button id="clear-output" class="secondary" type="button">画面から消す</button></p>
+  </section>
+
+  <section id="state-gone" hidden>
+    <h1>このリンクは使えません</h1>
+    <p id="cleared" hidden>画面から消しました。</p>
+    <div id="gone-why">
+      <p class="lead">すでに開かれたか、期限が切れています。</p>
+      <p><strong>自分で開いた覚えがなければ、誰かが先に開いた可能性があります。</strong>送り手に伝えて、そのキーを無効にしてもらってください。</p>
+    </div>
+    <p><a class="secondary" href="https://apikeybin.com/" rel="noopener noreferrer">新しくリンクを作る</a></p>
+  </section>
+
+  <section id="state-badlink" hidden>
+    <h1>リンクが途中で切れています</h1>
+    <p class="lead">届いたリンクを全部コピーして、開き直してください。</p>
+    <p class="hint">開いたあとにページを読み込み直した場合も、この表示になります。</p>
+  </section>
+
+  <section id="state-nopending" hidden>
+    <h1>リンクをもう一度開いてください</h1>
+    <p class="lead">届いたリンクを開き直すと、ここへ戻ります。</p>
+    <p class="hint">時間がたった場合や、別のタブで開いた場合、開いたあとに読み込み直した場合に、この表示になります。</p>
+  </section>
+
+  <section id="state-error" hidden>
+    <h1>開けませんでした</h1>
+    <p class="lead">通信の失敗か、中身が壊れています。</p>
+    <p>届いたリンクをもう一度開いてください。それでも開けなければ、送り手にリンクを作り直してもらってください。</p>
+  </section>
+</main>
+<footer class="site"><a href="https://apikeybin.com/report" rel="noopener noreferrer">このリンクの悪用を通報する</a></footer>
+</body>
+</html>

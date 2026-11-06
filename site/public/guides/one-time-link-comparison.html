@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ja" class="no-ads">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>1回だけ読めるリンクの比較｜Privnote、シークレット便、PrivateBin、Yopassなど｜APIキー便</title>
+<meta name="description" content="1回だけ読めるリンクを作るサービスを、暗号化する場所、上限、期限、広告の有無で比べました。各サービスの公式の文とソースコードで確かめ、APIキー便の弱いところも書いています。">
+<link rel="canonical" href="https://apikeybin.com/guides/one-time-link-comparison">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="APIキー便">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="1回だけ読めるリンクの比較｜Privnote、シークレット便、PrivateBin、Yopassなど｜APIキー便">
+<meta property="og:description" content="1回だけ読めるリンクを作るサービスを、暗号化する場所、上限、期限、広告の有無で比べました。各サービスの公式の文とソースコードで確かめ、APIキー便の弱いところも書いています。">
+<meta property="og:url" content="https://apikeybin.com/guides/one-time-link-comparison">
+<meta property="og:image" content="https://apikeybin.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="APIキー便。APIキーを、チャットに貼らずに渡す。ブラウザで暗号化、1回読むと消える、登録なし。">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+<header class="site"><a class="brand" href="/">APIキー便</a></header>
+<main>
+  <article class="col">
+    <h1>1回だけ読めるリンクの比較｜Privnote、シークレット便、PrivateBin、Yopassなど</h1>
+    <p class="lead">似て見えても、暗号化する場所が違います。<br>APIキー便も同じ表に入れて、弱いところも書きます。</p>
+    <p class="meta">内容の確認日: 2026年11月6日</p>
+    <div class="answer"><h2>選び方</h2><ul><li><strong>運営者にも読まれたくないなら、ブラウザで暗号化するもの</strong>（APIキー便、シークレット便、PrivateBin、privatenote.ai、Yopass、Privnote）です。ただ、鍵の作り方と合言葉の扱いに差があります。</li><li><strong>自分のサーバーで動かしたいなら</strong>、PrivateBin、Yopass、Password Pusher、Onetime Secretです。</li><li><strong>日本の会社が運営するものがよいなら</strong>、シークレット便です。運営は株式会社グッドヒルシステムズで、プライバシーマークがあります。</li><li><strong>会社で使う（SSOや監査）なら</strong>、有料プランのあるPassword PusherやOnetime Secretです。</li><li><strong>すでにパスワード管理ソフトを使っているなら</strong>、その共有機能が先です。</li></ul></div>
+    <p class="go"><a class="button" href="/">リンクを作る ›</a></p>
+    <section>
+      <h2>比較表</h2>
+<p class="meta scroll-hint">表は横に動かせます。</p>
+      <div class="table wide"><table>
+        <tr><th></th><th>APIキー便</th><th>シークレット便</th><th>PrivateBin</th><th>privatenote.ai</th><th>Yopass</th><th>Privnote</th><th>Onetime Secret</th><th>Password Pusher</th></tr>
+        <tr><th>暗号化する場所</th><td>ブラウザ</td><td>ブラウザ</td><td>ブラウザ</td><td>ブラウザ</td><td>ブラウザ</td><td>ブラウザ</td><td>サーバー</td><td>サーバー</td></tr>
+        <tr><th>自動で作る鍵</th><td>32バイト</td><td>32バイト</td><td>32バイト</td><td>32バイト</td><td>22文字</td><td>9文字</td><td>サーバー側</td><td>サーバー側</td></tr>
+        <tr><th>文字の上限</th><td>64KB</td><td>10,000文字</td><td>サーバーの設定しだい</td><td>50KB（有料は200KB、500KB）</td><td>既定は暗号文で10,000バイト。デモは未確認</td><td>記載なし</td><td>10,000バイト（日本語で約3,300字）</td><td>ソースでは1MiB。公式サービスは未確認</td></tr>
+        <tr><th>ファイル</th><td>文字のファイルだけ</td><td>なし（別の転送サービス）</td><td>あり。上限は未確認</td><td>無料アカウントで25MB</td><td>デモは512KB</td><td>なし</td><td>なし</td><td>有料プラン</td></tr>
+        <tr><th>期限</th><td>10分〜7日</td><td>10分〜7日</td><td>5分〜3日</td><td>最大3日（有料は15日、30日まで）</td><td>1時間、1日、1週間</td><td>読むまで。1時間〜30日も選べる</td><td>1分〜30日（未ログインは7日まで）</td><td>15分〜3か月</td></tr>
+        <tr><th>1回で消えるか</th><td>消える</td><td>消える</td><td><strong>選べる。既定は消えない</strong></td><td>消える。有料は回数を選べる</td><td>既定で消える。外せる</td><td>既定で消える。時間指定なら残る</td><td>消える</td><td><strong>既定は5回まで</strong>。1回も選べる</td></tr>
+        <tr><th>開いただけで消えないか</th><td>押すまで消えない</td><td>押すまで消えない</td><td>消す設定のときは確認あり</td><td>押すまで消えない</td><td>押すまで取りに行かない</td><td>確認あり。送り手が外せる</td><td>押すまで消えない</td><td>既定で押すまで見えない</td></tr>
+        <tr><th>合言葉</th><td>あり</td><td>あり（サーバーで照合）</td><td>あり</td><td>あり</td><td>あり</td><td>あり</td><td>あり</td><td>あり</td></tr>
+        <tr><th>ソースの公開</th><td>MIT OR Apache-2.0</td><td>見つからず</td><td>zlib/libpng</td><td>一部（暗号と道具はMIT）</td><td>Apache-2.0</td><td>見つからず</td><td>MIT</td><td>Apache-2.0</td></tr>
+        <tr><th>自分のサーバーで</th><td>手順は未整備</td><td>案内なし</td><td>できる（本来の使い方）</td><td>案内なし（サーバーは非公開）</td><td>できる（本来の使い方）</td><td>案内なし</td><td>できる</td><td>できる</td></tr>
+        <tr><th>有料プラン</th><td>なし</td><td>法人プランが1人月550円</td><td>なし</td><td>月$4〜</td><td>自前運用のライセンス 年€149</td><td>案内なし</td><td>月€35〜</td><td>月$19〜</td></tr>
+        <tr><th>広告</th><td>あり。受け取る画面にはなし</td><td>あり。受け取る画面にも枠がある</td><td>なし</td><td>なし</td><td>なし</td><td>あり（スマホ2枠、PC 4枠）</td><td>なし</td><td>なし</td></tr>
+        <tr><th>運営</th><td>名前は公開していません</td><td>株式会社グッドヒルシステムズ</td><td>privatebin.netは未確認</td><td>個人の開発者（名前を公開）</td><td>Yopass AB</td><td>ikatu（Gletin S.A.）</td><td>未確認</td><td>Apnotic, LLC</td></tr>
+      </table></div>
+      <p class="meta">Privnote、Onetime Secret、Password Pusher、Yopassは2026年11月5日、シークレット便、PrivateBin、privatenote.aiは11月6日に確かめました。実際に上限まで送って試してはいません。<br>Privnoteの説明はInternet Archiveの写しで読みました（公式のサイトが機械の読み取りを断るため）。スクリプトと広告は、その日にブラウザで読み込んで確かめました。<br>広告は各サービスの入口のページで測りました。シークレット便は作る画面（<code>/secret/new</code>）で測りました。Yopassのデモ（share.yopass.se）は測っていません。<br>シークレット便とprivatenote.aiの受け取る画面は、配られているスクリプトで読みました。この3つには、文字を送って試していません。<br>PrivateBinは、公開のサーバーの1つ（privatebin.net）で確かめました。上限はサーバーごとの設定で、既定は10MiBです。privatebin.netの値は公開されていません。<br>privatenote.aiの上限と期限は、無料の場合です。ソースは暗号と道具の部分だけが公開で、サイトとサーバーは公開されていません。<br>シークレット便の広告は、自社の別の事業の画像バナーです（作る画面で、スマホ1枠、PC 1枠）。<br>Privnoteでは、測ったときに作成のボタンを押すと全面の広告が出ました。<br>Onetime SecretのAboutのページには別の上限が書かれています。表は設定とコードの値です。</p>
+    </section>
+    <section>
+      <h2>暗号化する場所の違い</h2>
+<p><strong>ブラウザで暗号化するもの</strong>は、鍵がリンクの<code>#</code>より後ろに入り、サーバーに届きません。<br>運営者にも、サーバーを盗んだ人にも読めない作りです。</p>
+      <p><strong>サーバーで暗号化するもの</strong>は、中身がいったんサーバーに届きます。保存するときは暗号化しますが、鍵もサーバー側にあります。<br>Password Pusherは<q>Password Pusher does not provide custom client-side encryption</q>と明記しています。<br>どちらが悪いという話ではありません。運営者を信頼する形です。自分のサーバーで動かすなら、この差は小さくなります。</p>
+      <p><strong>ブラウザで暗号化しても、万全ではありません。</strong>配信元が乗っ取られると、配るプログラムをすり替えられます。これはAPIキー便も同じです。</p>
+    </section>
+    <section>
+      <h2>鍵の作り方の差</h2>
+<p>ブラウザで暗号化するものも、鍵の長さが違います。<br>鍵が短いと、暗号文を手に入れた人が総当たりで試せる余地が増えます。</p>
+      <div class="table"><table>
+        <tr><th>サービス</th><th>自動で作る鍵</th><th>大きさ</th><th>乱数</th></tr>
+        <tr><td>APIキー便</td><td>32バイト</td><td>256ビット</td><td><code>crypto.getRandomValues</code></td></tr>
+        <tr><td>シークレット便</td><td>32バイト</td><td>256ビット</td><td><code>crypto.subtle.generateKey</code></td></tr>
+        <tr><td>PrivateBin</td><td>32バイト</td><td>256ビット</td><td><code>crypto.getRandomValues</code></td></tr>
+        <tr><td>privatenote.ai</td><td>32バイト</td><td>256ビット</td><td><code>crypto.getRandomValues</code></td></tr>
+        <tr><td>Yopass</td><td>英数字22文字</td><td>約131ビット</td><td><code>crypto.getRandomValues</code></td></tr>
+        <tr><td>Privnote</td><td>英数字9文字</td><td>約54ビット</td><td><code>Math.random</code></td></tr>
+      </table></div>
+      <p>Privnoteは、2026年11月5日にブラウザが受け取ったスクリプト（<code>common.js</code>）で確かめました。<br>オプションで自分のパスワードを指定すれば、この鍵は使われません。<br>シークレット便、PrivateBin、privatenote.aiは、11月6日に配られていたスクリプトで確かめました。</p>
+      <p><strong>合言葉の扱いも違います。</strong>APIキー便、PrivateBin、privatenote.aiは、合言葉を鍵の計算に使います。<br>シークレット便の合言葉は、サーバーが照合するもので、暗号には使っていません（スクリプトで確かめました）。<br>リンクを手に入れた人を、サーバーが止める仕組みです。サーバーが乗っ取られたうえでリンクも漏れると、合言葉では守れません。</p>
+    </section>
+    <aside class="ad" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x250" data-ad-slot="guide-middle">広告の枠</div></aside>
+    <section>
+      <h2>開いただけで消えないか</h2>
+<p>チャットのプレビューやメールの検査ソフトがリンクを先に開くと、相手が読む前に消えることがあります。<br>どのサービスも、ボタンを押すまで消えない形でこれを防いでいます（Privnoteは確認を送り手が外せます。PrivateBinは、読んだら消す設定のときに確認が出ます）。</p>
+      <p>ただし、<strong>ボタンまで押すソフトは防げません。</strong><br>Onetime Secretは<q>Software that submits the reveal action can consume it.</q>と書いています。<br>Yopassの開発の場でも、メールの検査ソフトがボタンを押すという報告があります。<br>APIキー便も同じです。</p>
+    </section>
+    <section>
+      <h2>パスワード管理ソフトを使っているなら</h2>
+<div class="table"><table>
+        <tr><th></th><th>Bitwarden Send</th><th>1Password</th></tr>
+        <tr><th>送る側</th><td>アカウントが要ります。文字は無料プランで、ファイルは有料</td><td>アカウントが要ります</td></tr>
+        <tr><th>受け取る側</th><td>アカウントは要りません</td><td>アカウントは要りません</td></tr>
+        <tr><th>上限</th><td>暗号化後で1,000文字。ファイルは500MB</td><td>250MBを超えるファイルは共有できません</td></tr>
+        <tr><th>1回だけにできるか</th><td>回数の上限を自分で決めます。既定では制限なし</td><td>1回も選べます。個人向けの既定は7日で回数の制限なし</td></tr>
+      </table></div>
+      <p>どちらも端末の側で暗号化します。<br>使っているなら、新しいサービスを増やさずに済みます。</p>
+    </section>
+    <section>
+      <h2>APIキー便の弱いところ</h2>
+<ul>
+        <li><strong>新しいサービスです。</strong>実績がなく、独立した監査も受けていません。</li>
+        <li><strong>運営者の名前を公開していません。</strong></li>
+        <li><strong>広告があります。</strong>作る画面の周りに出ます。入力欄は別のオリジンの枠の中なので読まれませんが、乗っ取られると偽の入力欄に差し替えられる恐れはあります。</li>
+        <li><strong>受け取る人は1画面多く通ります。</strong>リンクを開くと、広告のあるページを通ってから中身を読みます。</li>
+        <li><strong>期限は4種類だけです。</strong>何回まで読めるかも選べません。</li>
+        <li><strong>大きいものは送れません。</strong>64KBまでで、いまは文字のファイルだけです。</li>
+        <li><strong>自分のサーバーで動かす手順は整っていません。</strong></li>
+        <li><strong>会社向けの機能はありません。</strong>SSOや監査ログはありません。</li>
+      </ul>
+      <p>作りの詳細は<a href="/guides/how-it-works">仕組みと限界</a>に書きました。</p>
+    </section>
+    <p class="go"><a class="button" href="/">リンクを作る ›</a></p>
+    <section class="sources">
+      <h2>確かめた公式の文</h2>
+      <ul><li><a href="https://github.com/apikeybin/apikeybin" rel="noopener">APIキー便: GitHub</a></li><li><a href="https://giga-watasu.jp/secret" rel="noopener">シークレット便（ギガワタス）</a></li><li><a href="https://giga-watasu.jp/pricing" rel="noopener">ギガワタス: 料金プラン</a></li><li><a href="https://giga-watasu.jp/company" rel="noopener">ギガワタス: 会社概要</a></li><li><a href="https://privatebin.net/" rel="noopener">PrivateBin（privatebin.net）</a></li><li><a href="https://github.com/PrivateBin/PrivateBin" rel="noopener">PrivateBin: GitHub</a></li><li><a href="https://privatenote.ai/ja/" rel="noopener">privatenote.ai</a></li><li><a href="https://privatenote.ai/ja/premium" rel="noopener">privatenote.ai: 料金</a></li><li><a href="https://github.com/privatenote-ai/privatenote-ai" rel="noopener">privatenote.ai: GitHub</a></li><li><a href="https://web.archive.org/web/20260603180016/https://privnote.com/info/privacy" rel="noopener">Privnote: Privacy Policy（Internet Archiveの写し・英語）</a></li><li><a href="https://privnote.com/" rel="noopener">Privnote</a></li><li><a href="https://docs.onetimesecret.com/en/security/data-protection/" rel="noopener">Onetime Secret: Data protection（英語）</a></li><li><a href="https://docs.onetimesecret.com/en/share/what-recipients-see/" rel="noopener">Onetime Secret: What recipients see（英語）</a></li><li><a href="https://docs.onetimesecret.com/en/pricing/compare-plans/" rel="noopener">Onetime Secret: Compare plans（英語）</a></li><li><a href="https://github.com/onetimesecret/onetimesecret" rel="noopener">Onetime Secret: GitHub</a></li><li><a href="https://docs.pwpush.com/docs/security/" rel="noopener">Password Pusher: Security（英語）</a></li><li><a href="https://eu.pwpush.com/pricing" rel="noopener">Password Pusher: Pricing（英語）</a></li><li><a href="https://github.com/pglombardo/PasswordPusher" rel="noopener">Password Pusher: GitHub</a></li><li><a href="https://yopass.se/docs/intro" rel="noopener">Yopass: Documentation（英語）</a></li><li><a href="https://github.com/jhaals/yopass" rel="noopener">Yopass: GitHub</a></li><li><a href="https://bitwarden.com/help/about-send/" rel="noopener">Bitwarden: About Send（英語）</a></li><li><a href="https://support.1password.com/share-items/" rel="noopener">1Password: Share items（英語）</a></li></ul>
+    </section>
+    <section>
+      <h2>関連する読み物</h2>
+      <ul><li><a href="/guides/how-it-works">APIキー便の仕組みと限界｜中身がサーバーに届かない理由</a></li><li><a href="/guides/api-key-sharing">APIキーの渡し方｜チャットに貼らずに共有する方法</a></li></ul>
+    </section>
+    <aside class="ad" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x250" data-ad-slot="guide-end">広告の枠</div></aside>
+  </article>
+<aside class="rail" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x600" data-ad-slot="guide-rail">広告の枠</div></aside>
+</main>
+<footer class="site"><nav aria-label="このサイトについて"><a href="/guides/">読み物</a> <a href="/privacy">プライバシー</a> <a href="/terms">利用規約</a> <a href="/report">通報</a> <a href="https://github.com/apikeybin/apikeybin" rel="noopener">GitHub</a></nav></footer>
+</body>
+</html>

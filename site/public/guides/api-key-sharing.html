@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ja" class="no-ads">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>APIキーの渡し方｜チャットに貼らずに共有する方法｜APIキー便</title>
+<meta name="description" content="APIキーを同僚や外部の協力者に渡すときの方法をまとめました。チャットやメールを避ける理由、渡さずに済ませる方法、権限の絞り方を各社の公式の文で確かめています。">
+<link rel="canonical" href="https://apikeybin.com/guides/api-key-sharing">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="APIキー便">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="APIキーの渡し方｜チャットに貼らずに共有する方法｜APIキー便">
+<meta property="og:description" content="APIキーを同僚や外部の協力者に渡すときの方法をまとめました。チャットやメールを避ける理由、渡さずに済ませる方法、権限の絞り方を各社の公式の文で確かめています。">
+<meta property="og:url" content="https://apikeybin.com/guides/api-key-sharing">
+<meta property="og:image" content="https://apikeybin.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="APIキー便。APIキーを、チャットに貼らずに渡す。ブラウザで暗号化、1回読むと消える、登録なし。">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+<header class="site"><a class="brand" href="/">APIキー便</a></header>
+<main>
+  <article class="col">
+    <h1>APIキーの渡し方｜チャットに貼らずに共有する方法</h1>
+    <p class="lead">いちばん良いのは、渡さないことです。<br>渡すなら、絞ってから、残らない形で渡します。</p>
+    <p class="meta">内容の確認日: 2026年11月5日</p>
+    <div class="answer"><h2>結論</h2><ul><li><strong>相手を招待できるなら、渡しません。</strong>相手は自分のキーを作れます。</li><li>渡すなら、権限を絞った別のキーを作ります。</li><li>チャットやメールの本文に貼りません。StripeもGitHubも、そう書いています。</li><li>チームで長く使うならシークレット管理ツール、1回だけ渡すなら1回だけ読めるリンクが向いています。</li></ul></div>
+    <p class="go"><a class="button" href="/">リンクを作る ›</a></p>
+    <section>
+      <h2>チャットに貼ってはいけない理由</h2>
+<p>公式の文は、はっきりしています。</p>
+      <ul>
+        <li>Stripeは<q>メール、チャットメッセージ、または顧客サポートメッセージ</q>ではなく、シークレット管理ツールで共有するようにと書いています。</li>
+        <li>GitHubは<q>暗号化されていないメッセージやメール システムを使って、認証資格情報を共有しないでください</q>と書いています。</li>
+        <li>Anthropicは、公開の場、メール、サポートへの問い合わせにキーを入れないようにと書いています。</li>
+      </ul>
+      <p>理由は、残るからです。</p>
+      <ul>
+        <li><strong>Slackの有料プランは、既定でワークスペースが存在する限り保存します。</strong>会話は検索できるアーカイブになります。<br>フリープランでも、最長で1年は残ります。</li>
+        <li><strong>キーは、止めるまで有効です。</strong>AWSは、長期のアクセスキーは手動で取り消すまで有効で、持っている人は誰でも同じ権限を持つと書いています。</li>
+      </ul>
+      <p>実際にも起きています。<br>GitGuardian（漏えいの検出サービスの会社）の2026年の報告では、社内の漏えいの28%がコードの外で起きていました。SlackやJira、Confluenceなどです。<br>急いで障害に対応している最中に貼られることが多いとも書かれています。</p>
+    </section>
+    <section>
+      <h2>渡さずに済ませる</h2>
+<p>各社とも、人のキーを共有するより、相手に自分の権限を持ってもらう形をすすめています。</p>
+      <div class="table"><table>
+        <tr><th>サービス</th><th>方法</th></tr>
+        <tr><td>OpenAI</td><td>Teamのページから組織に招待します。1人のキーをチームで使い回さないようにと書いています。アプリにはプロジェクトのサービスアカウントを使います。</td></tr>
+        <tr><td>Anthropic</td><td>メンバーのページの「+ 招待」から招待します（組織の管理者だけができます）。アクセスが要る人は自分のキーを持つようにと書いています。共有や自動化にはサービスアカウントを使います。</td></tr>
+        <tr><td>Google Cloud</td><td>各メンバーに、アプリケーションごとに独自のキーを持たせるようにと書いています。Geminiのキーはプロジェクトに紐づき、共同作業者もプロジェクトで管理します。</td></tr>
+        <tr><td>AWS</td><td>人にはIAM Identity Centerの一時的な認証情報を使います。アプリにはIAMロールを使います。どちらも長期のキーが要りません。</td></tr>
+        <tr><td>GitHub</td><td>個人のトークンを共有せず、GitHub Appを検討するようにと書いています。</td></tr>
+      </table></div>
+      <p>招待が向かないのは、組織の外の人に短い間だけ頼むときなどです。<br>次の方法へ進んでください。</p>
+    </section>
+    <section>
+      <h2>渡すなら、絞る</h2>
+<p>自分のキーをそのまま渡さないでください。<br>相手のために、権限を絞ったキーを別に作ります。<br>漏れても被害が小さく、そのキーだけを止められます。</p>
+      <ul>
+        <li><strong>Stripe:</strong>制限付きAPIキー。第三者と共有するなら最良の選択だと書いています。</li>
+        <li><strong>GitHub:</strong>fine-grainedトークン。対象のリポジトリと権限を絞れます。</li>
+        <li><strong>OpenAI:</strong>キーのスコープでできることを絞れます。作るときに有効期限を決めることも強くすすめています。</li>
+        <li><strong>Google Cloud:</strong>APIの制限とアプリケーションの制限を、両方付けるようにすすめています。</li>
+        <li><strong>Anthropic:</strong>キーを1つのワークスペースに限定でき、ワークスペースごとに月の上限を決められます。</li>
+        <li><strong>AWS:</strong>IAMポリシーの条件で、使えるネットワークを絞れます。</li>
+      </ul>
+    </section>
+    <aside class="ad" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x250" data-ad-slot="guide-middle">広告の枠</div></aside>
+    <section>
+      <h2>どうやって渡すか</h2>
+<div class="table"><table>
+        <tr><th>場面</th><th>向いている方法</th><th>気をつけること</th></tr>
+        <tr><td>チームで長く使う</td><td>シークレット管理ツール。GitHubは1PasswordやAzure Key Vaultを例に挙げています</td><td>全員分のアカウントと設定が要ります</td></tr>
+        <tr><td>1回だけ、1人に渡す</td><td>1回だけ読めるリンク</td><td>リンクを持つ人は誰でも開けます。合言葉は別の方法で伝えます</td></tr>
+        <tr><td>相手も同じパスワード管理ソフトを使っている</td><td>そのソフトの共有機能</td><td><a href="/guides/one-time-link-comparison">比較の記事</a>に書きました</td></tr>
+      </table></div>
+      <p>はっきりさせておくと、<strong>各社の公式の文に、1回だけ読めるリンクを勧めるものは見つかりませんでした。</strong><br>公式が勧めるのは、管理されたツールです。<br>1回だけ読めるリンクは、相手がアカウントを持てない、準備の時間がない、という場面のための手段です。</p>
+    </section>
+    <section>
+      <h2>APIキー便で渡す手順</h2>
+<ol>
+        <li><a href="/">トップページ</a>の入力欄に貼ります。<code>.env</code>などのファイルを選ぶこともできます。</li>
+        <li>有効期限を選びます。短いほど安全です。</li>
+        <li>必要なら合言葉を入れます。</li>
+        <li>「リンクを作る」を押して、できたリンクを相手に送ります。</li>
+        <li>合言葉は、リンクとは別の方法で伝えます。</li>
+      </ol>
+      <p>相手が開く前に「使えません」と出たら、誰かが先に開いた合図です。<br>そのキーを無効にして、作り直してください。</p>
+      <p><strong>このサイトも第三者です。</strong>Anthropicは、第三者のツールにキーを預けるときは、その開発者を信頼できるかを考えるようにと書いています。<br>APIキー便は中身がサーバーに届かない作りですが、配るプログラムをすり替えられる恐れはあります。<br><a href="/guides/how-it-works">仕組みと限界</a>を読んで、判断してください。</p>
+    </section>
+    <section>
+      <h2>渡したあとに</h2>
+<ul>
+        <li>使い終わったキーは無効にします。キーは使わなくなっても残り続けます。</li>
+        <li>キーを知っている人が組織を離れたら、入れ替えます。Stripeもそうすすめています。</li>
+        <li>漏れたかもしれないときは、<a href="/guides/api-key-leaked">APIキーが漏れたときにやること</a>へ進んでください。</li>
+      </ul>
+    </section>
+    <p class="go"><a class="button" href="/">リンクを作る ›</a></p>
+    <section class="sources">
+      <h2>確かめた公式の文</h2>
+      <ul><li><a href="https://docs.stripe.com/keys-best-practices?locale=ja-JP" rel="noopener">Stripe: APIキーのベストプラクティス</a></li><li><a href="https://docs.stripe.com/keys/restricted-api-keys?locale=ja-JP" rel="noopener">Stripe: 制限付きAPIキー</a></li><li><a href="https://docs.github.com/ja/rest/authentication/keeping-your-api-credentials-secure" rel="noopener">GitHub: APIの認証情報を安全に保つ</a></li><li><a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens" rel="noopener">GitHub: 個人アクセストークンの管理（英語）</a></li><li><a href="https://developers.openai.com/api/docs/guides/api-keys" rel="noopener">OpenAI: API keys（英語）</a></li><li><a href="https://developers.openai.com/api/docs/guides/production-best-practices" rel="noopener">OpenAI: Production best practices（英語）</a></li><li><a href="https://support.claude.com/ja/articles/9767949-api-key-best-practices-keeping-your-keys-safe-and-secure" rel="noopener">Anthropic: APIキーのベストプラクティス</a></li><li><a href="https://platform.claude.com/docs/ja/manage-claude/authentication" rel="noopener">Anthropic: 認証</a></li><li><a href="https://platform.claude.com/docs/ja/manage-claude/workspaces" rel="noopener">Anthropic: ワークスペース</a></li><li><a href="https://docs.cloud.google.com/docs/authentication/api-keys-best-practices?hl=ja" rel="noopener">Google Cloud: APIキーのベストプラクティス</a></li><li><a href="https://aistudio.google.com/docs/api-key" rel="noopener">Gemini API: APIキー（英語）</a></li><li><a href="https://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/securing_access-keys.html" rel="noopener">AWS: アクセスキーの保護</a></li><li><a href="https://slack.com/intl/ja-jp/help/articles/203457187" rel="noopener">Slack: メッセージとファイルの保存</a></li><li><a href="https://www.gitguardian.com/state-of-secrets-sprawl-report-2026" rel="noopener">GitGuardian: The State of Secrets Sprawl 2026（英語）</a></li></ul>
+    </section>
+    <section>
+      <h2>関連する読み物</h2>
+      <ul><li><a href="/guides/env-file-sharing">.envファイルをチームで共有する方法｜Gitとチャットに平文で置かない</a></li><li><a href="/guides/api-key-leaked">APIキーが漏れたときにやること｜GitHubに公開してしまったら</a></li><li><a href="/guides/one-time-link-comparison">1回だけ読めるリンクの比較｜Privnote、シークレット便、PrivateBin、Yopassなど</a></li></ul>
+    </section>
+    <aside class="ad" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x250" data-ad-slot="guide-end">広告の枠</div></aside>
+  </article>
+<aside class="rail" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x600" data-ad-slot="guide-rail">広告の枠</div></aside>
+</main>
+<footer class="site"><nav aria-label="このサイトについて"><a href="/guides/">読み物</a> <a href="/privacy">プライバシー</a> <a href="/terms">利用規約</a> <a href="/report">通報</a> <a href="https://github.com/apikeybin/apikeybin" rel="noopener">GitHub</a></nav></footer>
+</body>
+</html>

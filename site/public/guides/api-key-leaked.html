@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ja" class="no-ads">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>APIキーが漏れたときにやること｜GitHubに公開してしまったら｜APIキー便</title>
+<meta name="description" content="APIキーをGitHubに公開してしまったときの手順です。AWS、Google Cloud、Gemini、OpenAI、Anthropic、GitHub、Stripeの公式の文で確かめた、止め方と確かめ方をまとめました。">
+<link rel="canonical" href="https://apikeybin.com/guides/api-key-leaked">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="APIキー便">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="APIキーが漏れたときにやること｜GitHubに公開してしまったら｜APIキー便">
+<meta property="og:description" content="APIキーをGitHubに公開してしまったときの手順です。AWS、Google Cloud、Gemini、OpenAI、Anthropic、GitHub、Stripeの公式の文で確かめた、止め方と確かめ方をまとめました。">
+<meta property="og:url" content="https://apikeybin.com/guides/api-key-leaked">
+<meta property="og:image" content="https://apikeybin.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="APIキー便。APIキーを、チャットに貼らずに渡す。ブラウザで暗号化、1回読むと消える、登録なし。">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+<header class="site"><a class="brand" href="/">APIキー便</a></header>
+<main>
+  <article class="col">
+    <h1>APIキーが漏れたときにやること｜GitHubに公開してしまったら</h1>
+    <p class="lead">最初にするのは、履歴を消すことではありません。<br>キーを止めることです。</p>
+    <p class="meta">内容の確認日: 2026年11月5日</p>
+    <div class="answer"><h2>結論</h2><ul><li><strong>すぐにキーを止めるか、入れ替えます。</strong>GitHubは、公開されたキーは<q>数分で</q>機械に見つかると書いています。</li><li>コミットを消しても、リポジトリを作り直しても足りません。キーは有効なままです。</li><li>本番が止まって困らないなら、古いキーを先に止めます。困るなら、新しいキーへ切り替えてから止めます。</li><li>止めたら、使われた形跡と請求を確かめます。</li><li>履歴の書き換えは、そのあとで要るかどうかを考えます。不要な場合も多いと、GitHubは書いています。</li></ul></div>
+    <section>
+      <h2>止める順番</h2>
+<p>公式の文は、2つに分かれています。</p>
+      <ul>
+        <li><strong>古いキーを先に止める:</strong>Anthropic、AWSの復旧の記事、OWASP、GitHubのチュートリアル</li>
+        <li><strong>新しいキーへ切り替えてから止める:</strong>Google Cloud、Gemini、Stripe</li>
+      </ul>
+      <p>どちらかが間違いというより、何を恐れるかの違いです。<br>迷ったら、次で決めてください。</p>
+      <div class="table"><table>
+        <tr><th>状況</th><th>順番</th></tr>
+        <tr><td>権限が広いキー、管理者のキー</td><td><mark>先に止める</mark></td></tr>
+        <tr><td>身に覚えのない動きが見える</td><td><mark>先に止める</mark></td></tr>
+        <tr><td>本番で使っていないキー</td><td><mark>先に止める</mark></td></tr>
+        <tr><td>権限が狭く、不審な動きがなく、止めると本番が止まる</td><td>新しいキーへ切り替えてから、すぐ止める</td></tr>
+      </table></div>
+      <p>AWSは、本番が止まるなら短い遅れは許されることがあるとしつつ、管理者のキーや不審な動きがある場合は遅らせてはいけないと書いています。<br>AWSのルートユーザーのキーなら、すぐに入れ替えます。</p>
+    </section>
+    <section>
+      <h2>AWS</h2>
+<ol>
+        <li><a href="https://console.aws.amazon.com/iam/" rel="noopener">IAMコンソール</a>で、ユーザー → ユーザー名 → セキュリティ認証情報 → アクセスキーと進みます。</li>
+        <li>アクション → 非アクティブ化を選びます。<br>元に戻せます。削除は元に戻せないので、先にこちらです。</li>
+        <li>CloudTrailのイベント履歴で、ルックアップ属性を「AWSアクセスキー」にして、キーのIDを入れます。<br>見られるのは過去90日です。</li>
+        <li>Cost Explorerで、漏れた日から今日までの費用をサービスとリージョンごとに見ます。</li>
+      </ol>
+      <p><strong>発行済みの一時的な認証情報は、キーを止めても残ります。</strong>ロールを使っていたら、IAMコンソールのロール → Revoke sessions → Revoke active sessionsで止めます。</p>
+      <p>AWSが隔離のポリシー（AWSCompromisedKeyQuarantine）を付けていたら、対応が終わるまで外さないでください。<br>早く外すと、AWSの救済措置の対象に影響することがあると書かれています。<br>相談はSupport Center → Create case → Account and billing → Securityです。</p>
+    </section>
+    <section>
+      <h2>Google Cloud</h2>
+<ol>
+        <li><a href="https://console.cloud.google.com/apis/credentials" rel="noopener">認証情報のページ</a>で、キーの名前を押します。</li>
+        <li>「鍵をローテーションする」を押し、名前と制限を確かめて作ります。<br>この操作はコンソールでだけできます。</li>
+        <li>アプリを新しいキーに替えます。</li>
+        <li>新しいキーの詳細ページの「前のキー」で、「前のキーを削除」を押します。<br>誤って消しても、30日以内なら戻せます。</li>
+        <li>LoggingかSecurity Command Centerで、アクセスが想定どおりかを確かめます。</li>
+      </ol>
+      <p>請求について、Googleは個別に審査するとしています。<br>返金を約束する文は見つかりませんでした。</p>
+    </section>
+    <section>
+      <h2>Gemini API</h2>
+<ol>
+        <li><a href="https://aistudio.google.com/api-keys" rel="noopener">Google AI StudioのAPI Keysのページ</a>か、Cloudコンソールで新しいキーを作ります。</li>
+        <li>新しいキーでアプリを動かします。</li>
+        <li>確かめてから、古いキーを無効にするか削除します。</li>
+        <li>Cloudコンソールで、請求のログとAPIの使用状況を確かめます。</li>
+      </ol>
+      <p>漏れたと分かっているキーは、Googleが止めることがあります。<br>次のエラーが出たら、そのキーは使えません。新しいキーを作ってください。</p>
+      <pre>Your API key was reported as leaked. Please use another API key.</pre>
+      <p>身に覚えのない請求は、<a href="https://console.cloud.google.com/support/chat" rel="noopener">請求のサポート</a>に連絡します。<br>使いすぎを防ぐには、AI StudioのSpendのページで月の上限を決められます。<br>ただし試験提供で、10分ほどの遅れの間は超えることがあります。</p>
+    </section>
+    <section>
+      <h2>OpenAI</h2>
+<ol>
+        <li><a href="https://platform.openai.com/settings/organization/api-keys" rel="noopener">APIキーのページ</a>で、新しいキーを作ります。</li>
+        <li>アプリを新しいキーに替えて、動くことを確かめます。</li>
+        <li>古いキーを無効にします。</li>
+        <li><a href="https://platform.openai.com/usage" rel="noopener">Usageのページ</a>で使用量を確かめます。</li>
+      </ol>
+      <p>OpenAIの開発者向けの文書にある、入れ替えの順番です。<br>漏れたときの手順そのものは、ヘルプセンターが読み取れず確かめられませんでした。<br>権限が広いキーなら、順番を入れ替えて先に無効にしてください。</p>
+    </section>
+    <aside class="ad" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x250" data-ad-slot="guide-middle">広告の枠</div></aside>
+    <section>
+      <h2>Anthropic</h2>
+<ol>
+        <li><a href="https://platform.claude.com/settings/keys" rel="noopener">APIキーのページ</a>で、キーの横の3つの点を押します。</li>
+        <li>「APIキーを削除」を選びます。<br>Disableなら元に戻せますが、Deleteは戻せません。</li>
+        <li>同じページの「キーを作成」で、新しいキーを作ります。</li>
+        <li><a href="https://platform.claude.com/logs" rel="noopener">ログ</a>と<a href="https://platform.claude.com/usage" rel="noopener">使用状況</a>を確かめます。</li>
+      </ol>
+      <p>公開のGitHubリポジトリで見つかったキーは、Anthropicが自動で無効にしてメールで知らせると書いています。<br>動かなくなったら、これも疑ってください。</p>
+    </section>
+    <section>
+      <h2>GitHubのトークン</h2>
+<ol>
+        <li>右上のプロフィール画像 → Settings → Developer settingsと進みます。</li>
+        <li>Personal access tokensのFine-grained tokensかTokens (classic)を選びます。</li>
+        <li>対象のトークンのDeleteを押します。</li>
+        <li>Settingsの「Archives」にあるSecurity logで、過去90日の動きを確かめます。</li>
+      </ol>
+      <p>公開のリポジトリやgistにプッシュされたGitHubのトークンは、GitHubが自動で取り消します。<br>取り消されたトークンは元に戻せないので、作り直してください。</p>
+    </section>
+    <section>
+      <h2>Stripe</h2>
+<ol>
+        <li>ダッシュボードの<a href="https://dashboard.stripe.com/apikeys" rel="noopener">開発者 → APIキー</a>で、対象のキーを探します。</li>
+        <li>「...」→ キーをローテーション（Rotate key）を選びます。</li>
+        <li>有効期限を選びます。<br>「今すぐ」を選ぶと古いキーは消えます。最長7日は両方を使えます。</li>
+        <li>新しいキーで動くことを確かめて、古いキーを消します。</li>
+        <li>ワークベンチで、普段と違う使われ方がないかを確かめます。</li>
+      </ol>
+      <p>Stripeは、ほかのキーもすべて入れ替え、不正な請求は早く返金するようにすすめています。<br>誰も見ていないと思っても、入れ替えるようにと書いています。</p>
+    </section>
+    <section>
+      <h2>履歴を消すかどうか</h2>
+<p>GitHubの文書は、キーを止めたあとなら、履歴の書き換えは<strong>不要なことが多い</strong>と書いています（"often unnecessary if you've already revoked the credential"）。<br>時間がかかり、ほかの人の作業も壊すからです。</p>
+      <p>キーではなく、個人情報などを消したいときは別です。<br>書き換えても、次の場所には残ることがあります。</p>
+      <ul>
+        <li>ほかの人のクローンとフォーク</li>
+        <li>GitHubのキャッシュされた画面</li>
+        <li>そのコミットを参照するプルリクエスト</li>
+      </ul>
+      <p>古いクローンを持つ人が<code>git pull</code>と<code>git push</code>をすると、消したものが戻ります。<br>GitHubのサポートが手伝うのは、キーの入れ替えでは防げないと判断した場合だけです。</p>
+      <p>それでも消すなら、<a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository" rel="noopener">GitHubの手順</a>に沿って進めてください。<br>git-filter-repoの2.47以降を使います。<br>強制プッシュのあとは元に戻せません。</p>
+      <pre>git-filter-repo --sensitive-data-removal --invert-paths --path PATH-TO-YOUR-FILE-WITH-SENSITIVE-DATA
+git push --force --mirror origin</pre>
+    </section>
+    <section>
+      <h2>通知が来ないから大丈夫、ではありません</h2>
+<p>GitHubは公開のリポジトリを調べていますが、あなたに知らせるとは限りません。</p>
+      <ul>
+        <li>提携先の形式のキーが見つかると、GitHubは提供元へ知らせます。<br>提供元が止めることもありますが（"may"）、必ずではありません。</li>
+        <li>その知らせは、リポジトリの管理者には届きません。</li>
+        <li>あなた宛ての通知は、Secret Protectionを有効にしたリポジトリで出ます。</li>
+      </ul>
+      <p>プッシュの時点で止める機能も、キーの種類によって違います。<br>GitHubの表の抜粋です（2026年11月5日時点）。</p>
+      <div class="table"><table>
+        <tr><th>キー</th><th>提供元へ知らせる</th><th>あなたに通知</th><th>プッシュを止める</th></tr>
+        <tr><td>AWSのアクセスキー</td><td>○</td><td>○</td><td>○</td></tr>
+        <tr><td>AnthropicのAPIキー</td><td>○</td><td>○</td><td>○</td></tr>
+        <tr><td>GitHubのトークン</td><td>○</td><td>○</td><td>○</td></tr>
+        <tr><td>GoogleのAPIキー</td><td>○</td><td>○</td><td><mark>×</mark></td></tr>
+        <tr><td>GeminiのAPIキー</td><td><mark>×</mark></td><td>○</td><td><mark>×</mark></td></tr>
+        <tr><td>OpenAIのAPIキー</td><td>○</td><td>○</td><td>○</td></tr>
+        <tr><td>StripeのAPIキー</td><td>○</td><td>○</td><td>○</td></tr>
+      </table></div>
+      <p>Stripeも、すべての漏えいを見つけられるとは保証していません。<br>AWSは、不審な動きが見つからないことは安全の証拠にならないと書いています。</p>
+      <p>止めないまま放置されるキーは多いようです。<br>GitGuardian（漏えいの検出サービスの会社）の2026年の報告では、2022年に有効と確認された認証情報の64%以上が、2026年1月の再確認でもまだ有効でした。</p>
+    </section>
+    <section>
+      <h2>次に漏らさないために</h2>
+<ul>
+        <li><strong><code>.env</code>を<code>.gitignore</code>に入れます。</strong>その変更もコミットして、ほかの人も守られるようにします。</li>
+        <li><strong>プライベートでも安全ではありません。</strong>GitHubは、プライベートのリポジトリでも暗号化していないキーをプッシュしないようにと書いています。</li>
+        <li><strong>プッシュ保護を確かめます。</strong>Settings → Code security → Push protection for yourselfです。<br>公開のリポジトリへのプッシュを止める機能で、既定で有効です。<br>リポジトリ単位の保護は、リポジトリのSettings → Advanced SecurityのSecret Protectionから有効にします。</li>
+        <li><strong>キーの権限を絞ります。</strong>漏れたときの被害が小さくなります。<a href="/guides/api-key-sharing">APIキーの渡し方</a>に書きました。</li>
+        <li><strong>新しいキーをチャットで渡さないでください。</strong>同じことが起きます。</li>
+      </ul>
+    </section>
+    <p class="go"><a class="button" href="/">リンクを作る ›</a></p>
+    <section class="sources">
+      <h2>確かめた公式の文</h2>
+      <ul><li><a href="https://docs.github.com/ja/code-security/tutorials/remediate-leaked-secrets/remediating-a-leaked-secret" rel="noopener">GitHub: 漏えいしたシークレットの修復</a></li><li><a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository" rel="noopener">GitHub: リポジトリからの機微なデータの削除（英語）</a></li><li><a href="https://docs.github.com/en/code-security/reference/secret-security/supported-secret-scanning-patterns" rel="noopener">GitHub: シークレットスキャンの対象の一覧（英語）</a></li><li><a href="https://docs.github.com/en/code-security/concepts/secret-security/push-protection" rel="noopener">GitHub: プッシュ保護（英語）</a></li><li><a href="https://repost.aws/articles/ARTdf-AQfbTy--wzQmf2JOOg" rel="noopener">AWS: Responding to an exposed AWS access key（英語）</a></li><li><a href="https://docs.aws.amazon.com/ja_jp/IAM/latest/UserGuide/access-keys-admin-managed.html" rel="noopener">AWS: アクセスキーの管理</a></li><li><a href="https://docs.cloud.google.com/docs/security/compromised-credentials?hl=ja" rel="noopener">Google Cloud: 認証情報が漏洩したおそれがある場合</a></li><li><a href="https://docs.cloud.google.com/docs/authentication/api-keys?hl=ja" rel="noopener">Google Cloud: APIキーの管理</a></li><li><a href="https://aistudio.google.com/docs/api-key" rel="noopener">Gemini API: APIキー（英語）</a></li><li><a href="https://aistudio.google.com/docs/troubleshooting" rel="noopener">Gemini API: トラブルシューティング（英語）</a></li><li><a href="https://developers.openai.com/api/docs/guides/api-keys" rel="noopener">OpenAI: API keys（英語）</a></li><li><a href="https://support.claude.com/ja/articles/8384961" rel="noopener">Anthropic: APIキーが漏れたと思ったら</a></li><li><a href="https://support.claude.com/ja/articles/9767949-api-key-best-practices-keeping-your-keys-safe-and-secure" rel="noopener">Anthropic: APIキーのベストプラクティス</a></li><li><a href="https://support.stripe.com/questions/protecting-against-compromised-api-keys?locale=ja-JP" rel="noopener">Stripe: APIキーの漏えいへの対応</a></li><li><a href="https://docs.stripe.com/keys-best-practices?locale=ja-JP" rel="noopener">Stripe: APIキーのベストプラクティス</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html" rel="noopener">OWASP: Secrets Management Cheat Sheet（英語）</a></li><li><a href="https://www.gitguardian.com/state-of-secrets-sprawl-report-2026" rel="noopener">GitGuardian: The State of Secrets Sprawl 2026（英語）</a></li></ul>
+    </section>
+    <section>
+      <h2>関連する読み物</h2>
+      <ul><li><a href="/guides/api-key-sharing">APIキーの渡し方｜チャットに貼らずに共有する方法</a></li><li><a href="/guides/env-file-sharing">.envファイルをチームで共有する方法｜Gitとチャットに平文で置かない</a></li></ul>
+    </section>
+    <aside class="ad" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x250" data-ad-slot="guide-end">広告の枠</div></aside>
+  </article>
+<aside class="rail" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x600" data-ad-slot="guide-rail">広告の枠</div></aside>
+</main>
+<footer class="site"><nav aria-label="このサイトについて"><a href="/guides/">読み物</a> <a href="/privacy">プライバシー</a> <a href="/terms">利用規約</a> <a href="/report">通報</a> <a href="https://github.com/apikeybin/apikeybin" rel="noopener">GitHub</a></nav></footer>
+</body>
+</html>

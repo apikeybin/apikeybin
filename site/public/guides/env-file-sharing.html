@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ja" class="no-ads">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>.envファイルをチームで共有する方法｜Gitとチャットに平文で置かない｜APIキー便</title>
+<meta name="description" content=".envファイルをチームで共有する方法をまとめました。.gitignoreと.env.example、暗号化してGitに入れる方法、管理ツール、1回だけ読めるリンクの使い分けです。">
+<link rel="canonical" href="https://apikeybin.com/guides/env-file-sharing">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="APIキー便">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content=".envファイルをチームで共有する方法｜Gitとチャットに平文で置かない｜APIキー便">
+<meta property="og:description" content=".envファイルをチームで共有する方法をまとめました。.gitignoreと.env.example、暗号化してGitに入れる方法、管理ツール、1回だけ読めるリンクの使い分けです。">
+<meta property="og:url" content="https://apikeybin.com/guides/env-file-sharing">
+<meta property="og:image" content="https://apikeybin.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="APIキー便。APIキーを、チャットに貼らずに渡す。ブラウザで暗号化、1回読むと消える、登録なし。">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+<header class="site"><a class="brand" href="/">APIキー便</a></header>
+<main>
+  <article class="col">
+    <h1>.envファイルをチームで共有する方法｜Gitとチャットに平文で置かない</h1>
+    <p class="lead">平文の<code>.env</code>を、Gitとチャットに置かないでください。<br>渡し方は、人数と続ける期間で選びます。</p>
+    <p class="meta">内容の確認日: 2026年11月5日</p>
+    <div class="answer"><h2>結論</h2><ul><li><strong>平文の<code>.env</code>は<code>.gitignore</code>に入れます。</strong>どの変数が要るかは<code>.env.example</code>で伝えます。</li><li>新しい人に1回渡すだけなら、1回だけ読めるリンクで足ります。</li><li>チームで続けて使うなら、暗号化してGitに入れる（dotenvx、SOPS）か、管理ツール（1Password、Doppler、Infisical）を使います。</li><li>Gitに入れてしまったら、消す前にキーを止めます。</li></ul></div>
+    <p class="go"><a class="button" href="/">リンクを作る ›</a></p>
+    <section>
+      <h2>まず、Gitに入らないようにする</h2>
+<p>GitHubのNode向けの<code>.gitignore</code>のひな形は、次の形です。</p>
+      <pre># dotenv environment variable files
+.env
+.env.*
+!.env.example</pre>
+      <p>すでにGitが追跡しているファイルは、<code>.gitignore</code>に書いても外れません。先に追跡をやめます。</p>
+      <pre>git rm --cached FILENAME</pre>
+      <p>どの変数が要るかは、値を消した<code>.env.example</code>で共有します。<br>Laravelの文書も、チームならこの形をすすめています。</p>
+      <pre># .env.example
+STRIPE_KEY=
+DATABASE_URL=</pre>
+      <p>Twelve-Factor Appの目安も分かりやすいです。<br><q>認証情報を漏洩させることなく、コードベースを今すぐにでもオープンソースにすることができるかどうか</q>を考えます。</p>
+      <p>決まりは、ファイルの名前ではなく秘密についてのものです。<br>開発用の値だけのファイルをコミットする考え方もあります（Rubyのdotenv）。<br>本物のキーが入るなら、入れないでください。</p>
+    </section>
+    <section>
+      <h2>どの方法を選ぶか</h2>
+<div class="table"><table>
+        <tr><th>方法</th><th>向いている場面</th><th>別に渡すもの</th></tr>
+        <tr><td>1回だけ読めるリンク</td><td>新しい人に1回渡す。外部の人に渡す</td><td>合言葉を付けるならそれ</td></tr>
+        <tr><td>dotenvx</td><td>コードと一緒にGitで管理したい</td><td>秘密鍵（<code>.env.keys</code>）</td></tr>
+        <tr><td>SOPS</td><td>KMSやageで人ごとに権限を分けたい</td><td>共有の鍵は要りません。各人の公開鍵を受取人に足します</td></tr>
+        <tr><td>1Password Environments</td><td>チームで1Passwordを使っている</td><td>なし（1Passwordの中で共有します）</td></tr>
+        <tr><td>Doppler、Infisical</td><td>環境ごとの秘密を1か所で管理したい</td><td>なし（ログインして取り出します）</td></tr>
+      </table></div>
+    </section>
+    <section>
+      <h2>暗号化してGitに入れる</h2>
+<p>「Gitに入れない」のは平文の話です。<br>暗号化してあれば入れてよい、という考え方もあります。</p>
+      <h3>dotenvx</h3>
+      <p>dotenvの作者によるツールで、dotenvのREADMEも、dotenvxで暗号化するならコミットをすすめています（作者自身の製品です）。</p>
+      <pre>dotenvx encrypt
+git add .env
+git commit -m "encrypt .env"
+dotenvx run -- node index.js</pre>
+      <ul>
+        <li>秘密鍵は<code>.env.keys</code>に入ります。これはコミットしません。</li>
+        <li><code>.env</code>を<code>.gitignore</code>に入れたままなら、追加は<code>git add -f .env</code>になります。</li>
+        <li>秘密鍵は、必要な人とサーバーへ別に渡します。<br>dotenvxの文書は、どう渡すかまでは書いていません。1回だけ読めるリンクが使える場面です。</li>
+        <li>変数名は読めます。コメントも暗号化されません。</li>
+      </ul>
+      <h3>SOPS</h3>
+      <p>YAML、JSON、ENV、INIなどを暗号化するツールです。<br>AWS KMS、GCP KMS、Azure Key Vault、age、PGPなどで暗号化します。CNCFのSandboxプロジェクトです。</p>
+      <pre>age-keygen -o key.txt
+sops encrypt --age age1yt3tfqlfrwdwx0z0ynwplcr6qxcxfaqycuprpmy89nr83ltx74tqdpszlw test.yaml &gt; test.enc.yaml
+sops edit mynewtestfile.yaml</pre>
+      <p>上は文書にある例で、YAMLの場合です。<code>age1...</code>は受取人の公開鍵に置き換えます。<br>各人が自分の鍵で開くので、共有の鍵を配らずに済みます。<br>こちらも変数名は読めます。</p>
+    </section>
+    <aside class="ad" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x250" data-ad-slot="guide-middle">広告の枠</div></aside>
+    <section>
+      <h2>管理ツールを使う</h2>
+<h3>1Password Environments</h3>
+      <p>2026年8月のお知らせで一般提供になりました。<br>オーナーか管理者がポリシーを有効にすると、チームで共有できます。<br>MacとLinuxでは<code>.env</code>として見せる機能があり、中身はディスクに保存されません。<br>Windowsでは<code>op run --environment</code>を使います。</p>
+      <h3>Doppler</h3>
+      <p>コマンドで環境変数として渡すサービスです。<br>3人まで無料で、それ以上は1人あたり月8ドルです（2026年11月5日時点）。</p>
+      <pre>doppler login
+doppler setup
+doppler run -- your-command-here</pre>
+      <h3>Infisical</h3>
+      <p>オープンソースの管理ツールで、自分のサーバーでも動かせます。<br>無料プランは5つのID（人と機械を合わせて）までです。リンクで秘密を共有する機能もあります。</p>
+    </section>
+    <section>
+      <h2>1回だけ読めるリンクで渡す</h2>
+<p>準備なしで使えるのが利点です。<br>新しい人に<code>.env</code>を1回渡す場面に向いています。<br>チームの全員に繰り返し配るなら、上の方法のほうが向いています。</p>
+      <ol>
+        <li><a href="/">トップページ</a>で<code>.env</code>を選ぶか、枠の中にドラッグします（64KBまで）。</li>
+        <li>有効期限を選び、必要なら合言葉を入れます。</li>
+        <li>「リンクを作る」を押して、相手に送ります。</li>
+      </ol>
+      <p>ファイルの名前も中身と一緒に暗号化します。サーバーには名前も届きません。</p>
+      <p><strong>受け取る人へ:</strong>ブラウザで保存すると、<code>.env</code>の先頭の点が外れて<code>env</code>になります（Chromium、WebKit、Firefoxで確かめました）。<br>使う前に元の名前に戻してください。</p>
+    </section>
+    <section>
+      <h2>Gitに入れてしまったら</h2>
+<p><strong>消す前に、中のキーを止めます。</strong><br>GitHubは、秘密が漏れたときの最初の手順は無効化か入れ替えだと書いています。</p>
+      <p>ファイルを消すだけでは足りません。<br>GitHubの文書にあるとおり、消したファイルも履歴には残ります。<br>直前のコミットでまだプッシュしていないなら、取り消して済みます。それより前なら履歴の書き換えが要ります。</p>
+      <p>手順は<a href="/guides/api-key-leaked">APIキーが漏れたときにやること</a>に書きました。</p>
+    </section>
+    <p class="go"><a class="button" href="/">リンクを作る ›</a></p>
+    <section class="sources">
+      <h2>確かめた公式の文</h2>
+      <ul><li><a href="https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore" rel="noopener">GitHub: Node.gitignore</a></li><li><a href="https://docs.github.com/en/get-started/git-basics/ignoring-files" rel="noopener">GitHub: ファイルを無視する（英語）</a></li><li><a href="https://docs.github.com/en/repositories/working-with-files/managing-files/deleting-files-in-a-repository" rel="noopener">GitHub: リポジトリのファイルを削除する（英語）</a></li><li><a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository" rel="noopener">GitHub: リポジトリからの機微なデータの削除（英語）</a></li><li><a href="https://laravel.com/framework/docs/12.x/configuration" rel="noopener">Laravel: Configuration（英語）</a></li><li><a href="https://12factor.net/ja/config" rel="noopener">The Twelve-Factor App: 設定</a></li><li><a href="https://github.com/motdotla/dotenv" rel="noopener">dotenv: README（英語）</a></li><li><a href="https://github.com/bkeepers/dotenv" rel="noopener">Ruby dotenv: README（英語）</a></li><li><a href="https://dotenvx.com/docs/encrypted-env-file/" rel="noopener">dotenvx: Encrypted .env file（英語）</a></li><li><a href="https://getsops.io/docs/" rel="noopener">SOPS: Documentation（英語）</a></li><li><a href="https://www.1password.dev/environments" rel="noopener">1Password: Environments（英語）</a></li><li><a href="https://www.1password.community/developers-blog-53/developer-newsletter-august-2026-25379" rel="noopener">1Password: Developer newsletter, August 2026（英語）</a></li><li><a href="https://docs.doppler.com/docs/cli" rel="noopener">Doppler: CLI（英語）</a></li><li><a href="https://www.doppler.com/pricing" rel="noopener">Doppler: Pricing（英語）</a></li><li><a href="https://github.com/Infisical/infisical" rel="noopener">Infisical: README（英語）</a></li><li><a href="https://infisical.com/pricing" rel="noopener">Infisical: Pricing（英語）</a></li></ul>
+    </section>
+    <section>
+      <h2>関連する読み物</h2>
+      <ul><li><a href="/guides/api-key-sharing">APIキーの渡し方｜チャットに貼らずに共有する方法</a></li><li><a href="/guides/api-key-leaked">APIキーが漏れたときにやること｜GitHubに公開してしまったら</a></li></ul>
+    </section>
+    <aside class="ad" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x250" data-ad-slot="guide-end">広告の枠</div></aside>
+  </article>
+<aside class="rail" aria-label="広告"><p class="ad-label">広告</p><div class="ad-box ad-300x600" data-ad-slot="guide-rail">広告の枠</div></aside>
+</main>
+<footer class="site"><nav aria-label="このサイトについて"><a href="/guides/">読み物</a> <a href="/privacy">プライバシー</a> <a href="/terms">利用規約</a> <a href="/report">通報</a> <a href="https://github.com/apikeybin/apikeybin" rel="noopener">GitHub</a></nav></footer>
+</body>
+</html>
